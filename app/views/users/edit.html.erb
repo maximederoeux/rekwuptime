@@ -1,10 +1,10 @@
-<%= simple_form_for(@attendance) do |f| %>
+<%= simple_form_for(@user) do |f| %>
   <%= f.error_notification %>
 
     
-    <%= f.hidden_field :in, :value => true %>
-    <%= f.input :created_at %>
-
+    <%= f.input :name %>
+    <%= f.input :first_name %>
+    
   
   <div class="form-actions">
 
@@ -12,3 +12,4 @@
 
   </div>
 <% end %>
+

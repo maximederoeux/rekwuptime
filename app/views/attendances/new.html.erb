@@ -1,5 +1,34 @@
-<h1>New Attendance</h1>
 
-<%= render 'form' %>
+<h1 class="text-center">
+<%= Time.now.strftime("%A %d/%m/%Y") %><br>
+<%= Time.now.strftime("%H:%M") %>
+</h1>
 
-<%= link_to 'Back', attendances_path %>
+
+
+<% if current_user.attendances.last.content == "entree" %>
+<%# Si utilisateur déjà in, bouton sortie %>
+	<%= simple_form_for(@attendance) do |f| %>
+	  <%= f.error_notification %>    
+	  	<%= f.hidden_field :user_id, :value => current_user.id %>
+	    <%= f.hidden_field :content, :value => "sortie" %>	  
+	  <div class="form-actions">
+	    <%= f.submit "Sortie", class: "btn btn-default" %>
+	  </div>
+	<% end %> 
+	<%= current_user.first_name %> , pour l'instant, vous êtes dedans.
+
+<% else %>
+<%# Si utilisateur out, bouton entrée %>
+	<%= simple_form_for(@attendance) do |f| %>
+	  <%= f.error_notification %>	
+	  	<%= f.hidden_field :user_id, :value => current_user.id %>    
+	    <%= f.hidden_field :content, :value => "entree" %>	  
+	  <div class="form-actions">
+	    <%= f.submit "Entrée", class: "btn btn-default" %>
+	  </div>
+	<% end %>
+	<%= current_user.first_name %> , pour l'instant, vous êtes dehors.
+
+
+<% end %>

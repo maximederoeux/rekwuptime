@@ -28,7 +28,7 @@ class AttendancesController < ApplicationController
 
     respond_to do |format|
       if @attendance.save
-        format.html { redirect_to @attendance, notice: 'Attendance was successfully created.' }
+        format.html { redirect_to users_path, notice: 'Attendance was successfully created.' }
         format.json { render :show, status: :created, location: @attendance }
       else
         format.html { render :new }
@@ -69,6 +69,8 @@ class AttendancesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def attendance_params
-      params.require(:attendance).permit(:user_id, :in)
+      params.require(:attendance).permit(:user_id, :in, :content, :created_at)
     end
+
+    
 end

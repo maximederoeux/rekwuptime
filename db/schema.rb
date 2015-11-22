@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151122105821) do
+ActiveRecord::Schema.define(version: 20151122135425) do
 
   create_table "attendances", force: :cascade do |t|
     t.integer  "user_id"
     t.boolean  "in"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "content"
   end
 
   create_table "users", force: :cascade do |t|
@@ -34,6 +35,9 @@ ActiveRecord::Schema.define(version: 20151122105821) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "name"
+    t.string   "first_name"
+    t.string   "status"
+    t.string   "validation_code"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
