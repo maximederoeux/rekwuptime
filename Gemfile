@@ -46,3 +46,17 @@ group :development do
   gem 'spring'
 end
 
+
+gem 'bootstrap-sass'
+gem 'devise'
+gem 'high_voltage'
+gem 'simple_form'
+gem 'thin'
+
+group :development do
+  gem 'better_errors'
+  gem 'quiet_assets'
+  gem 'rails_apps_pages'
+  gem 'rails_layout'
+end
+
