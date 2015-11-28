@@ -1,32 +1,93 @@
 <% if user_signed_in? %>
-<%= Date.today.strftime("%A %d/%m/%Y") %>
-  <% @users.each do |user| %>
-    <%= user.name %>
-    <%= user.first_name %>
-      <% user.attendances.where(:content => "entree", :created_at => (Date.today.beginning_of_day..Date.today.end_of_day)).each do |attendance| %>
-        <%= attendance.created_at.strftime("%H:%M") %>
-        <%= attendance.content %>
-        <% end %>
-      <% user.attendances.where(content: "sortie").each do |attendance| %>
-        <%= attendance.created_at.strftime("%H:%M") %>
-        <%= attendance.content %>
-        <% end %><br>
 
-  <% end %>
 
-  blabla
+
+  <%= Date.today.strftime("%A %d/%m/%Y") %>
+
+    <% @employees.each do |employee| %>
+
+      <%= employee.name %>
+      <%= employee.first_name %>
+
+      <% employee.sorties_today.each do |sortie| %>
+
+        <%= employee.entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
+
+        <%= sortie.created_at.strftime("%H:%M") %>
+
+        <%= (sortie.created_at - employee.entrees.where("created_at < ?", sortie.created_at).last.created_at)/3600 %>
+
+
+      <% end %>
+          
+    <% end %>
+<br>
+
+
+
+  <%= Date.current.yesterday.strftime("%A %d/%m/%Y") %>
+    <% @employees.each do |employee| %>
+      <%= employee.name %>
+      <%= employee.first_name %><br>
+        <% employee.attendances.where(:content => "sortie",:created_at => (1.day.ago.beginning_of_day..1.day.ago.end_of_day)).each do |attendance| %>
+            
+            <%= employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+
+            <%= attendance.created_at.strftime("%H:%M") %>
+
+            <%= (attendance.created_at - employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at)/3600 %><br>
+
+          <% end %>
+
+    <% end %>
+<br>
+  <%= 2.days.ago.strftime("%A %d/%m/%Y") %>
+    <% @employees.each do |employee| %>
+      <%= employee.name %>
+      <%= employee.first_name %><br>
+        <% employee.attendances.where(:content => "sortie",:created_at => (2.days.ago.beginning_of_day..2.days.ago.end_of_day)).each do |attendance| %>
+            
+            <%= employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+
+            <%= attendance.created_at.strftime("%H:%M") %>
+
+            <%= (attendance.created_at - employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at)/3600 %><br>
+
+          <% end %>
+
+    <% end %>
 
 <% else %>
 
-  <% @users.each do |user| %>
-    <% unless user.attendances.last && Time.now - user.attendances.last.created_at < 1.minute %>
-      <%= link_to user.first_name, user_path(user), class: "btn btn-lg btn-primary" %>
-    <% else %>
-      
-      <button type="button" class="btn btn-default btn-lg" disabled="disabled">
-        <%= user.first_name %>
-      </button>
-    <% end %>
-  <% end %>
+<div class="container">
 
+  <h1 class="text-center">
+  <%= Time.now.strftime("%A %d/%m/%Y") %><br>
+  <%= Time.now.strftime("%H:%M") %>
+  </h1>
+
+  <div class="row">
+    
+      <% @employees.each do |employee| %>
+
+        <div class="col-xs-6 col-md-4">
+
+            <% unless employee.attendances.last && Time.now - employee.attendances.last.created_at < 1.minute %>
+              <%= link_to employee.full_name, employee_path(employee), class: "btn btn-lg btn-default btn-block" %>
+            <% else %>
+              
+              <button type="button" class="btn btn-default btn-lg btn-block" disabled="disabled">
+                <%= employee.full_name %>
+              </button>
+            <% end %>
+          
+
+        </div>
+
+      <% end %>
+
+  </div>
+
+</div>
 <% end %>
+

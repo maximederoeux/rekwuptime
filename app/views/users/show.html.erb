@@ -3,29 +3,29 @@
 <%= Time.now.strftime("%H:%M") %>
 </h1>
 
-<% if @user.attendances.last.content == "entree" %>
+<% if @employee.attendances.any? && @employee.attendances.last.content == "entree" %>
 <%# Si utilisateur déjà in, bouton sortie %>
 	<%= simple_form_for(@attendance) do |f| %>
 	  <%= f.error_notification %>    
-	  	<%= f.hidden_field :user_id, :value => @user.id %>
+	  	<%= f.hidden_field :employee_id, :value => @employee.id %>
 	    <%= f.hidden_field :content, :value => "sortie" %>	  
 	  <div class="form-actions">
 	    <%= f.submit "Sortie", class: "btn btn-default" %>
 	  </div>
 	<% end %> 
-	<%= @user.first_name %> , pour l'instant, vous êtes dedans.
+	<%= @employee.first_name %> , pour l'instant, vous êtes dedans.
 
 <% else %>
 <%# Si utilisateur out, bouton entrée %>
 	<%= simple_form_for(@attendance) do |f| %>
 	  <%= f.error_notification %>	
-	  	<%= f.hidden_field :user_id, :value => @user.id %>    
+	  	<%= f.hidden_field :employee_id, :value => @employee.id %>    
 	    <%= f.hidden_field :content, :value => "entree" %>	  
 	  <div class="form-actions">
 	    <%= f.submit "Entrée", class: "btn btn-default" %>
 	  </div>
 	<% end %>
-	<%= @user.first_name %> , pour l'instant, vous êtes dehors.
+	<%= @employee.first_name %> , pour l'instant, vous êtes dehors.
 
 
 <% end %>

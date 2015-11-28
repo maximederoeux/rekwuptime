@@ -1,0 +1,14 @@
+<%= simple_form_for(@employee) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name, :label => "Nom" %>
+    <%= f.input :first_name, :label => "Prénom" %>
+    <%= f.input :status, :label => "Statut" %>
+    <%= f.input :validation_code, :label => "Code de Validation" %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit "Enregistrer", class: "btn btn-default" %>
+  </div>
+<% end %>

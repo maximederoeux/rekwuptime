@@ -2,7 +2,8 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, :except => [:index, :show]
 
   def index
-    @users = User.all
+    @users = User.order('name ASC')
+    @attendances = Attendance.all
   end
 
   def show
@@ -16,6 +17,10 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+  end
+
+  def new
+    @user = User.new
   end
 
   def update
@@ -35,7 +40,7 @@ class UsersController < ApplicationController
    
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :first_name, :validation_code)
+      params.require(:user).permit(:name, :first_name)
     end
 
 end

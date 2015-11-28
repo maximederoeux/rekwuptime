@@ -1,0 +1,78 @@
+<% if user_signed_in? %>
+
+blabla
+
+<% else %>
+
+<p>
+  <strong>Name:</strong>
+  <%= @employee.name %>
+</p>
+
+<p>
+  <strong>First name:</strong>
+  <%= @employee.first_name %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @employee.status %>
+</p>
+
+<p>
+  <strong>Validation Code:</strong>
+  <%= @employee.validation_code %>
+</p>
+
+<%= link_to 'Edit', edit_employee_path(@employee) %> |
+<%= link_to 'Back', employees_path %>
+
+<h1 class="text-center">
+<%= Time.now.strftime("%A %d/%m/%Y") %><br>
+<%= Time.now.strftime("%H:%M") %>
+</h1>
+
+<%#= simple_form_for(@attendance) do |f| %>
+  <%#= f.error_notification %>
+
+    
+    <%#= f.hidden_field :in, :value => true %>
+    <%#= f.hidden_field :created_at %>
+
+  
+  <%#<div class="form-actions">
+
+    <%= f.button :submit, class: "btn btn-default" %>
+
+  <%#</div>
+<%#<% end %>
+
+<%#<% end %>
+
+	<% if @employee.attendances.any? && @employee.attendances.last.content == "entree" %>
+	<%# Si utilisateur déjà in, bouton sortie %>
+		<%= simple_form_for(@attendance) do |f| %>
+		  <%= f.error_notification %>    
+		  	<%= f.hidden_field :employee_id, :value => @employee.id %>
+		    <%= f.hidden_field :content, :value => "sortie" %>	  
+		  <div class="form-actions">
+		    <%= f.submit "Sortie", class: "btn btn-default" %>
+		  </div>
+		<% end %> 
+		<%= @employee.first_name %> , pour l'instant, vous êtes dedans.
+
+	<% else %>
+	<%# Si utilisateur out, bouton entrée %>
+		<%= simple_form_for(@attendance) do |f| %>
+		  <%= f.error_notification %>	
+		  	<%= f.hidden_field :employee_id, :value => @employee.id %>    
+		    <%= f.hidden_field :content, :value => "entree" %>	  
+		  <div class="form-actions">
+		    <%= f.submit "Entrée", class: "btn btn-default" %>
+		  </div>
+		<% end %>
+		<%= @employee.first_name %> , pour l'instant, vous êtes dehors.
+
+	<% end %>
+
+<% end %>

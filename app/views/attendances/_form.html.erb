@@ -1,14 +1,25 @@
-<%= simple_form_for(@attendance) do |f| %>
-  <%= f.error_notification %>
+<% if user_signed_in? %>
 
-    
-    <%= f.hidden_field :in, :value => true %>
-    <%= f.input :created_at %>
+	<%= simple_form_for(@attendance) do |f| %>
+	  <%= f.error_notification %>
+
+    	<%= @attendance.id %>
+    	<%= f.input :employees_id %>
+	    <%= f.input :in, :value => true %>
+	    <%= f.input :created_at %>
+	    <%= f.input :content %>
 
   
-  <div class="form-actions">
+  	<div class="form-actions">
 
-    <%= f.button :submit, class: "btn btn-default" %>
+    	<%= f.button :submit, class: "btn btn-default" %>
 
-  </div>
+  	</div>
+
+  	<% end %>
+
+<% else %>
+
+blabla
+
 <% end %>

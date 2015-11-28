@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
+  resources :employees
   resources :attendances
-  root to: 'visitors#index'
+  root to: 'employees#index'
   devise_for :users
   resources :users
 end

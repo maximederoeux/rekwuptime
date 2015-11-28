@@ -1,0 +1,81 @@
+
+
+<% if user_signed_in? %>
+
+  <h1>Travailleurs enregistrés</h1>
+
+  <%= link_to 'Ajouter un travailleur', new_employee_path, class: "btn btn-default" %>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Statut</th>
+        <th>Code de Validation</th>
+        <th colspan="4"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @employees.each do |employee| %>
+        <tr>
+          <td><%= link_to employee.name, employee_path(employee), class: "btn btn-xs btn-default" %></td>
+          <td><%= employee.first_name %></td>
+          <td><%= employee.status %></td>
+          <td><%= employee.validation_code %></td>
+          <td><%= link_to 'Show', employee %></td>
+          <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
+          <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+
+<div class="container">
+
+  <h1 class="text-center">
+  <%= Time.now.strftime("%A %d/%m/%Y") %><br>
+  <%= Time.now.strftime("%H:%M") %>
+  </h1>
+
+  <div class="row">
+    
+      <% @employees.each do |employee| %>
+
+        <div class="col-xs-6 col-md-4">
+
+            
+              <%= link_to employee.name, employee_path(employee), class: "btn btn-lg btn-default btn-block" %>
+            
+              
+              
+            
+          
+
+        </div>
+
+      <% end %>
+
+  </div>
+
+</div>
+
+
+<% end %>
+
+          <!-- <div class="col-xs-6 col-md-4">
+
+            <%# unless employee.attendances.last && Time.now - employee.attendances.last.created_at < 1.minute %>
+              <%#= link_to employee.name, employee_path(employee), class: "btn btn-lg btn-default btn-block" %>
+            <%# else %>
+              
+              <button type="button" class="btn btn-default btn-lg btn-block" disabled="disabled">
+                <%#= employee.full_name %>
+              </button>
+            <%# end %>
+          
+
+          </div> -->
