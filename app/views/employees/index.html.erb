@@ -48,7 +48,14 @@
         <div class="col-xs-6 col-md-4">
 
             
-              <%= link_to employee.name, employee_path(employee), class: "btn btn-lg btn-default btn-block" %>
+            <% unless employee.attendances.last && Time.now - employee.attendances.last.created_at < 1.minute %>
+              <%= link_to employee.full_name, employee_path(employee), class: "btn btn-lg btn-default btn-block" %>
+            <% else %>
+              
+              <button type="button" class="btn btn-default btn-lg btn-block" disabled="disabled">
+                <%= employee.full_name %>
+              </button>
+            <% end %>
             
               
               
@@ -66,16 +73,4 @@
 
 <% end %>
 
-          <!-- <div class="col-xs-6 col-md-4">
-
-            <%# unless employee.attendances.last && Time.now - employee.attendances.last.created_at < 1.minute %>
-              <%#= link_to employee.name, employee_path(employee), class: "btn btn-lg btn-default btn-block" %>
-            <%# else %>
-              
-              <button type="button" class="btn btn-default btn-lg btn-block" disabled="disabled">
-                <%#= employee.full_name %>
-              </button>
-            <%# end %>
-          
-
-          </div> -->
+ 

@@ -32,23 +32,6 @@ blabla
 <%= Time.now.strftime("%H:%M") %>
 </h1>
 
-<%#= simple_form_for(@attendance) do |f| %>
-  <%#= f.error_notification %>
-
-    
-    <%#= f.hidden_field :in, :value => true %>
-    <%#= f.hidden_field :created_at %>
-
-  
-  <%#<div class="form-actions">
-
-    <%= f.button :submit, class: "btn btn-default" %>
-
-  <%#</div>
-<%#<% end %>
-
-<%#<% end %>
-
 	<% if @employee.attendances.any? && @employee.attendances.last.content == "entree" %>
 	<%# Si utilisateur déjà in, bouton sortie %>
 		<%= simple_form_for(@attendance) do |f| %>
