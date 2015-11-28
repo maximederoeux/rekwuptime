@@ -1,8 +1,10 @@
 <p id="notice"><%= notice %></p>
 
+<% if user_signed_in? %>
+
 <h1>Listing Attendances</h1>
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Employee</th>
@@ -14,10 +16,10 @@
   <tbody>
     <% @attendances.each do |attendance| %>
       <tr>
-        <td><%= attendance.employee_id %></td>
-        <td><%= attendance.in %></td>
+        <td><%= attendance.employee.full_name %></td>
         <td><%= attendance.content %></td>
-        <td><%= attendance.created_at.strftime("%A %d/%m/%Y %H:%M") %></td><br>
+        <td><%= attendance.created_at.strftime("%A %d/%m/%Y") %></td>
+        <td><%= attendance.created_at.strftime("%H:%M") %></td>
         <td><%= link_to 'Show', attendance %></td>
         <td><%= link_to 'Edit', edit_attendance_path(attendance) %></td>
         <td><%= link_to 'Destroy', attendance, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -29,3 +31,10 @@
 <br>
 
 <%= link_to 'New Attendance', new_attendance_path %>
+
+<% else %>
+
+blabla
+
+<% end %>
+

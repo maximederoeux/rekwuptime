@@ -29,4 +29,8 @@ class Employee < ActiveRecord::Base
 		(attendance.created_at - employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at)
 	end
 
+	def full_name_with_id
+    	"##{id} - #{full_name}"
+  	end
+
 end

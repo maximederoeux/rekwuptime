@@ -3,10 +3,16 @@
 	<%= simple_form_for(@attendance) do |f| %>
 	  <%= f.error_notification %>
 
-    	<%= @attendance.id %>
-    	<%= f.input :employees_id %>
-	    <%= f.input :in, :value => true %>
-	    <%= f.input :created_at %>
+    	<%= @attendance.id %><br>
+      <%= @attendance.employee_id %>
+      <%= @attendance.employee.full_name %>
+
+
+      <%= f.collection_select :employee_id, Employee.all, :id, :full_name, {prompt: true} %>
+
+
+      
+      <%= f.input :created_at %>
 	    <%= f.input :content %>
 
   

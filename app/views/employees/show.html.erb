@@ -32,15 +32,21 @@ blabla
 <%= Time.now.strftime("%H:%M") %>
 </h1>
 
+
+
 	<% if @employee.attendances.any? && @employee.attendances.last.content == "entree" %>
 	<%# Si utilisateur déjà in, bouton sortie %>
+
 		<%= simple_form_for(@attendance) do |f| %>
 		  <%= f.error_notification %>    
+
 		  	<%= f.hidden_field :employee_id, :value => @employee.id %>
-		    <%= f.hidden_field :content, :value => "sortie" %>	  
+		    <%= f.hidden_field :content, :value => "sortie" %>	 
+
 		  <div class="form-actions">
 		    <%= f.submit "Sortie", class: "btn btn-default" %>
 		  </div>
+		  
 		<% end %> 
 		<%= @employee.first_name %> , pour l'instant, vous êtes dedans.
 
