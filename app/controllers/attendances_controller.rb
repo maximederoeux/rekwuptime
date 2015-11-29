@@ -29,7 +29,11 @@ class AttendancesController < ApplicationController
 
     respond_to do |format|
       if @attendance.save
-        format.html { redirect_to employees_path, notice: 'Attendance was successfully created.' }
+        if @attendance.entree
+        format.html { redirect_to employees_path, notice: 'Vous êtes bien enregistré'}
+      elsif @attendance.sortie
+        format.html { redirect_to employees_path, notice: 'Vous êtes bien déconnecté.'}
+      end
         format.json { render :show, status: :created, location: @attendance }
       else
         format.html { render :new }

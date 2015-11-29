@@ -14,7 +14,7 @@
           <th>Nom</th>
           <th>Prénom</th>
           <th>Statut</th>
-          <th>Code de Validation</th>
+          <th>Content</th>
           <th colspan="5"></th>
         </tr>
       </thead>
@@ -26,7 +26,15 @@
             <td><%= link_to employee.name, employee_path(employee), class: "btn btn-xs btn-default" %></td>
             <td><%= employee.first_name %></td>
             <td><%= employee.status %></td>
-            <td><%= employee.validation_code %></td>
+            <td>
+               <% if employee.attendances.last %>
+              <%= employee.attendances.last.content_display %>
+              <% else %>
+              Absent(e)
+              <% end %>
+
+
+            </td>
             <td><%= link_to 'Show', employee %></td>
             <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
             <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>

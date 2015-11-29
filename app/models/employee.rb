@@ -23,6 +23,36 @@ class Employee < ActiveRecord::Base
 		self.attendances.sortie
 	end	
 	
+	def last_move_content
+		if self.attendances.last.content = "entree"
+			"Dernière entrée"
+		elsif self.attendances.last.content = "sortie"
+			"Dernière sortie"
+		end
+	end
+
+	def last_move_time
+		self.attendances.last.created_at
+	end
+
+	def last_move_day
+		if self.last_move_time.strftime("%u") == '7'
+			"dimanche"
+		elsif self.last_move_time.strftime("%u") == '1'
+			"lundi"
+		elsif self.last_move_time.strftime("%u") == '2'
+			"mardi"
+		elsif self.last_move_time.strftime("%u") == '3'
+			"mercredi"
+		elsif self.last_move_time.strftime("%u") == '4'
+			"jeudi"
+		elsif self.last_move_time.strftime("%u") == '5'
+			"vendredi"
+		elsif self.last_move_time.strftime("%u") == '6'
+			"samedi"
+		end
+			
+	end
 
 	# duration between an out and the next in, in seconds
 	def duration_in_out

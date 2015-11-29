@@ -15,8 +15,30 @@ class Attendance < ActiveRecord::Base
 
 	scope :one_week_before, lambda {where(:created_at => (7.day.ago.beginning_of_day..Date.current.end_of_day))}
 
-end
+
 
 def my_date
 	Time.now + 6.days
+end
+
+def content_display
+	if content == 'entree'
+		"Présent(e)"
+
+	elsif content == 'sortie'
+		"Absent(e)"
+
+	end
+end
+
+def entree
+	content == 'entree'
+end
+
+def sortie
+	content == 'sortie'
+end
+
+
+
 end
