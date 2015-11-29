@@ -24,9 +24,9 @@ class Employee < ActiveRecord::Base
 	end	
 	
 	def last_move_content
-		if self.attendances.last.content = "entree"
+		if self.attendances.last.content == "entree"
 			"Dernière entrée"
-		elsif self.attendances.last.content = "sortie"
+		elsif self.attendances.last.content == "sortie"
 			"Dernière sortie"
 		end
 	end
