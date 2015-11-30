@@ -1,9 +1,148 @@
 <% if user_signed_in? %>
 
-<h2><%= @employee.name %> <%= @employee.first_name %><h2>
-<strong>Status:</strong><%= @employee.status %>
-<strong>Validation Code:</strong><%= @employee.validation_code %>
+<% @employee.sorties.each do |sortie| %>
 
+  <p><%= sortie.created_at %><br>
+
+  <%= @employee.previous_entree(sortie).created_at %><br>
+
+<%= @employee.duration(sortie) %><br>
+
+<%= @employee.duration_in_minutes(sortie) %><br>
+
+<%= @employee.duration_in_hours(sortie) %><br>
+
+<%= @employee.duration_in_hours(sortie) %>h<%= @employee.display_duration_minutes(sortie) %>m<%= @employee.display_duration_seconds(sortie) %>s<br>
+
+<%= @employee.display_duration(sortie) %>
+
+
+</p>
+
+<% end %>
+
+
+<h4><%= @employee.name %> <%= @employee.first_name %><br>
+Status: <%= @employee.status %>
+Code de validation: <%= @employee.validation_code %><h4>
+
+	<%= Date.today.strftime("%A %d/%m/%Y") %><br>
+
+
+        <% @employee.sorties_today.each do |sortie| %>
+
+	        <%= @employee.entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
+
+	        <%= sortie.created_at.strftime("%H:%M") %>
+
+	        <%= (sortie.created_at - @employee.entrees.where("created_at < ?", sortie.created_at).last.created_at)/3600 %><br>
+
+      	<% end %><br>
+
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+        <th><%= Date.current.yesterday.strftime("%A %d/%m/%Y") %></th>
+        <th colspan="1"></th>
+        </tr>
+        </thead>
+
+        <thead>
+          <tr>
+            <th>Entrée</th>
+            <th>Sortie</th>
+            <th>Durée</th>
+            <th colspan="4"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+  	    <% @employee.attendances.where(:content => "sortie",:created_at => (1.day.ago.beginning_of_day..1.day.ago.end_of_day)).each do |sortie| %>
+        <tr>
+              
+  	        <td><%= @employee.attendances.where("created_at < ?", sortie.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %></td>
+
+  	        <td><%= sortie.created_at.strftime("%H:%M") %></td>
+
+  	        <td><%= @employee.duration_in_hours(sortie) %>h<%= @employee.display_duration_minutes(sortie) %>m<%= @employee.display_duration_seconds(sortie) %>s</td>
+          <tr>
+
+        <% end %><br>
+        </tbody>
+    </table>
+    
+
+  	<%= 2.days.ago.strftime("%A %d/%m/%Y") %>
+    
+      	<% @employee.attendances.sortie.two_days_before.each do |sortie| %>
+            
+            <%= @employee.attendances.entree.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
+
+            <%= sortie.created_at.strftime("%H:%M") %>
+
+            <%= (sortie.created_at - @employee.attendances.entree.where("created_at < ?", sortie.created_at).last.created_at)/3600 %><br>
+
+        <% end %><br>
+
+	<%= 3.days.ago.strftime("%A %d/%m/%Y") %>
+    
+      	<% @employee.attendances.where(:content => "sortie",:created_at => (3.days.ago.beginning_of_day..3.days.ago.end_of_day)).each do |attendance| %>
+            
+            <%= @employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+
+            <%= attendance.created_at.strftime("%H:%M") %>
+
+            <%= (attendance.created_at - @employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at)/3600 %><br>
+
+        <% end %><br>    
+
+	<%= 4.days.ago.strftime("%A %d/%m/%Y") %>
+    
+      	<% @employee.attendances.where(:content => "sortie",:created_at => (4.days.ago.beginning_of_day..4.days.ago.end_of_day)).each do |attendance| %>
+            
+            <%= @employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+
+            <%= attendance.created_at.strftime("%H:%M") %>
+
+            <%= (attendance.created_at - @employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at)/3600 %><br>
+
+        <% end %><br>    
+
+	<%= 5.days.ago.strftime("%A %d/%m/%Y") %>
+    
+      	<% @employee.attendances.where(:content => "sortie",:created_at => (5.days.ago.beginning_of_day..5.days.ago.end_of_day)).each do |attendance| %>
+            
+            <%= @employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+
+            <%= attendance.created_at.strftime("%H:%M") %>
+
+            <%= (attendance.created_at - @employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at)/3600 %><br>
+
+        <% end %><br>
+
+	<%= 6.days.ago.strftime("%A %d/%m/%Y") %>
+    
+      	<% @employee.attendances.where(:content => "sortie",:created_at => (6.days.ago.beginning_of_day..6.days.ago.end_of_day)).each do |attendance| %>
+            
+            <%= @employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+
+            <%= attendance.created_at.strftime("%H:%M") %>
+
+            <%= (attendance.created_at - @employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at)/3600 %><br>
+
+        <% end %><br>
+
+    <%= 7.days.ago.strftime("%A %d/%m/%Y") %>
+    
+      	<% @employee.attendances.where(:content => "sortie",:created_at => (7.days.ago.beginning_of_day..7.days.ago.end_of_day)).each do |attendance| %>
+            
+            <%= @employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+
+            <%= attendance.created_at.strftime("%H:%M") %>
+
+            <%= (attendance.created_at - @employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at)/3600 %><br>
+
+        <% end %><br>
 
 <% else %>
 

@@ -39,6 +39,14 @@ def sortie
 	content == 'sortie'
 end
 
+# duration between an out and the next in, in seconds
+	def duration_in_out
+		(attendance.created_at - employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at)
+	end
+
+	def duration_in_hours
+		(sortie.created_at - employee.entrees.where("created_at < ?", sortie.created_at).last.created_at)/3600
+	end
 
 
 end

@@ -6,7 +6,6 @@ class Employee < ActiveRecord::Base
 
     def full_name
     	"#{first_name} #{name}"
-    	
     end
     
 
@@ -35,6 +34,7 @@ class Employee < ActiveRecord::Base
 		self.attendances.last.created_at
 	end
 
+
 	def last_move_day
 		if self.last_move_time.strftime("%u") == '7'
 			"dimanche"
@@ -54,13 +54,51 @@ class Employee < ActiveRecord::Base
 			
 	end
 
-	# duration between an out and the next in, in seconds
-	def duration_in_out
-		(attendance.created_at - employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at)
-	end
+	
 
 	def full_name_with_id
     	"##{id} - #{full_name}"
   	end
+
+	# calculation
+
+	# def duration
+	# 	# time of one particular sortie - time of previous entree of the employee
+	# 	if self.attendances.sortie
+
+	# 	self.attendances.sortie.last.created_at - self.attendances.entree.where("created_at < ?", self.attendances.sortie.created_at).last.created_at
+	# end
+
+	def duration(attendance)
+		if attendance.sortie
+			(attendance.created_at - previous_entree(attendance).created_at).floor
+		end
+	end
+
+	def previous_entree(attendance)
+		if attendance.sortie
+			self.attendances.entree.where("created_at < ?", attendance.created_at).last
+		end
+	end
+
+	def duration_in_minutes(attendance)
+		(duration(attendance) / 60).floor
+	end
+
+	def duration_in_hours(attendance)
+		(duration_in_minutes(attendance) / 60).floor
+	end
+
+	def display_duration_minutes(attendance)
+		self.duration_in_minutes(attendance) - (self.duration_in_hours(attendance))*60
+	end
+
+	def display_duration_seconds(attendance)
+		self.duration(attendance) - (self.duration_in_minutes(attendance)*60)	
+	end
+
+	def display_duration(attendance)
+		"#{self.duration_in_hours(attendance)}h#{self.display_duration_minutes(attendance)}m#{self.display_duration_seconds(attendance)}s"
+	end
 
 end

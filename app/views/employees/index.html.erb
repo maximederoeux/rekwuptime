@@ -11,11 +11,10 @@
       <thead>
         <tr>
           <th>Id</th>
-          <th>Nom</th>
-          <th>Prénom</th>
+          <th>Nom et prénom</th>
           <th>Statut</th>
           <th>Content</th>
-          <th colspan="5"></th>
+          <th colspan="4"></th>
         </tr>
       </thead>
 
@@ -23,8 +22,10 @@
         <% @employees.each do |employee| %>
           <tr>
             <td><%= employee.id %></td>
-            <td><%= link_to employee.name, employee_path(employee), class: "btn btn-xs btn-default" %></td>
-            <td><%= employee.first_name %></td>
+            <td><%= link_to employee.full_name, employee_path(employee), class: "btn btn-xs btn-link" %>
+              <%= link_to edit_employee_path(employee) do %>
+              <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+              <% end %></td>
             <td><%= employee.status %></td>
             <td>
                <% if employee.attendances.last %>
@@ -32,12 +33,9 @@
               <% else %>
               Absent(e)
               <% end %>
-
-
             </td>
-            <td><%= link_to 'Show', employee %></td>
-            <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
-            <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                        
+            <!-- <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
           </tr>
         <% end %>
       </tbody>
