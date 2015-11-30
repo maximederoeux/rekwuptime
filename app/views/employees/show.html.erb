@@ -1,8 +1,5 @@
 <% if user_signed_in? %>
 
-<%= @employee.total_duration %>
-<%= @employee.display_total_duration %>
-
 
 <h4><%= @employee.name %> <%= @employee.first_name %><br>
 Status: <%= @employee.status %>
@@ -10,9 +7,13 @@ Code de validation: <%= @employee.validation_code %><h4>
 
 <div class="container-fluid">
 
-  
-    <div class="col-md-12">
-      <%= Date.today.strftime("%A %d/%m/%Y") %>
+    <div class="row">
+      <div class="col-md-6">
+        <%= Date.today.strftime("%A %d/%m/%Y") %>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_this_day %>
+    </div>
     </div>
 
       <% @employee.sorties.this_day.each do |sortie| %>
@@ -42,9 +43,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
     	<% end %><br>
 
-    <div class="col-md-12">
-      <%= Date.current.yesterday.strftime("%A %d/%m/%Y") %>
-    </div><br>
+    <div class="row">
+      <div class="col-md-6">
+        <%= Date.current.yesterday.strftime("%A %d/%m/%Y") %>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_one_day_before %>
+      </div>
+    </div>
 
       <% @employee.sorties.one_day_before.each do |sortie| %>
     
@@ -72,9 +78,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
       <% end %><br>
 
-    <div class="col-md-12">
-    <%= 2.days.ago.strftime("%A %d/%m/%Y") %>
-    </div><br>
+    <div class="row">
+      <div class="col-md-6">
+        <%= 2.days.ago.strftime("%A %d/%m/%Y") %>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_two_days_before %>
+      </div>
+    </div>
 
         <% @employee.sorties.two_days_before.each do |sortie| %>
 
@@ -102,9 +113,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
         <% end %><br>
 
-    <div class="col-md-12">  
-    <%= 3.days.ago.strftime("%A %d/%m/%Y") %>
-    </div><br>
+    <div class="row">
+      <div class="col-md-6">
+        <%= 3.days.ago.strftime("%A %d/%m/%Y") %>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_three_days_before %>
+      </div>
+    </div>
 
        	<% @employee.sorties.three_days_before.each do |sortie| %>
           
@@ -132,9 +148,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
         <% end %><br>    
 
-    <div class="col-md-12">
-  	 <%= 4.days.ago.strftime("%A %d/%m/%Y") %>
-    </div><br>
+    <div class="row">
+      <div class="col-md-6">
+        <%= 4.days.ago.strftime("%A %d/%m/%Y") %>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_four_days_before %>
+      </div>
+    </div>
 
         	<% @employee.sorties.four_days_before.each do |sortie| %>
             
@@ -162,9 +183,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
           <% end %><br>    
 
-    <div class="col-md-12">
-  	 <%= 5.days.ago.strftime("%A %d/%m/%Y") %>
-    </div><br>
+    <div class="row">
+      <div class="col-md-6">
+        <%= 5.days.ago.strftime("%A %d/%m/%Y") %>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_five_days_before %>
+      </div>
+    </div>
       
         	<% @employee.sorties.five_days_before.each do |sortie| %>
              
@@ -192,9 +218,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
           <% end %><br>
 
-    <div class="col-md-12">
-  	 <%= 6.days.ago.strftime("%A %d/%m/%Y") %>
-    </div><br>
+    <div class="row">
+      <div class="col-md-6">
+        <%= 6.days.ago.strftime("%A %d/%m/%Y") %>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_six_days_before %>
+      </div>
+    </div>
       
         	<% @employee.sorties.six_days_before.each do |sortie| %>
             
@@ -222,9 +253,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
           <% end %><br>
 
-      <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
         <%= 7.days.ago.strftime("%A %d/%m/%Y") %>
-      </div><br>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_seven_days_before %>
+      </div>
+    </div>
       
         	<% @employee.sorties.seven_days_before.each do |sortie| %>
             
@@ -252,9 +288,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
           <% end %><br>
 
-      <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
         <%= 8.days.ago.strftime("%A %d/%m/%Y") %>
-      </div><br>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_eight_days_before %>
+      </div>
+    </div>
       
           <% @employee.sorties.eight_days_before.each do |sortie| %>
             
@@ -282,9 +323,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
           <% end %><br>
 
-      <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
         <%= 9.days.ago.strftime("%A %d/%m/%Y") %>
-      </div><br>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_nine_days_before %>
+      </div>
+    </div>
       
           <% @employee.sorties.nine_days_before.each do |sortie| %>
             
@@ -312,9 +358,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
           <% end %><br>
 
-      <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
         <%= 10.days.ago.strftime("%A %d/%m/%Y") %>
-      </div><br>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_ten_days_before %>
+      </div>
+    </div>
       
           <% @employee.sorties.ten_days_before.each do |sortie| %>
             
@@ -342,9 +393,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
           <% end %><br>
 
-      <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
         <%= 11.days.ago.strftime("%A %d/%m/%Y") %>
-      </div><br>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_eleven_days_before %>
+      </div>
+    </div>
       
           <% @employee.sorties.eleven_days_before.each do |sortie| %>
             
@@ -372,9 +428,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
           <% end %><br>
 
-      <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
         <%= 12.days.ago.strftime("%A %d/%m/%Y") %>
-      </div><br>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_twelve_days_before %>
+      </div>
+    </div>
       
           <% @employee.sorties.twelve_days_before.each do |sortie| %>
             
@@ -402,9 +463,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
           <% end %><br>
 
-      <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
         <%= 13.days.ago.strftime("%A %d/%m/%Y") %>
-      </div><br>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_thirteen_days_before %>
+      </div>
+    </div>
       
           <% @employee.sorties.thirteen_days_before.each do |sortie| %>
             
@@ -432,9 +498,14 @@ Code de validation: <%= @employee.validation_code %><h4>
 
           <% end %><br>
 
-      <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
         <%= 14.days.ago.strftime("%A %d/%m/%Y") %>
-      </div><br>
+      </div>
+      <div class="col-md-6">
+      Total du jour: <%= @employee.display_total_duration_fourteen_days_before %>
+      </div>
+    </div>
       
           <% @employee.sorties.fourteen_days_before.each do |sortie| %>
             
