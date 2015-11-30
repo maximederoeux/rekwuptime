@@ -12,6 +12,15 @@ class Attendance < ActiveRecord::Base
 	scope :five_days_before, lambda {where(:created_at => (5.days.ago.beginning_of_day..5.days.ago.end_of_day))}
 	scope :six_days_before, lambda {where(:created_at => (6.days.ago.beginning_of_day..6.days.ago.end_of_day))}
 	scope :seven_days_before, lambda {where(:created_at => (7.days.ago.beginning_of_day..7.days.ago.end_of_day))}
+	scope :eight_days_before, lambda {where(:created_at => (8.days.ago.beginning_of_day..8.days.ago.end_of_day))}
+	scope :nine_days_before, lambda {where(:created_at => (9.days.ago.beginning_of_day..9.days.ago.end_of_day))}
+	scope :ten_days_before, lambda {where(:created_at => (10.days.ago.beginning_of_day..10.days.ago.end_of_day))}
+	scope :eleven_days_before, lambda {where(:created_at => (11.days.ago.beginning_of_day..11.days.ago.end_of_day))}
+	scope :twelve_days_before, lambda {where(:created_at => (12.days.ago.beginning_of_day..12.days.ago.end_of_day))}
+	scope :thirteen_days_before, lambda {where(:created_at => (13.days.ago.beginning_of_day..13.days.ago.end_of_day))}
+	scope :fourteen_days_before, lambda {where(:created_at => (14.days.ago.beginning_of_day..14.days.ago.end_of_day))}
+	
+
 
 	scope :one_week_before, lambda {where(:created_at => (7.day.ago.beginning_of_day..Date.current.end_of_day))}
 

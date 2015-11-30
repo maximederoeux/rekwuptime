@@ -7,105 +7,461 @@
 Status: <%= @employee.status %>
 Code de validation: <%= @employee.validation_code %><h4>
 
-  <%= Date.today.strftime("%A %d/%m/%Y") %><br>
+<div class="container-fluid">
 
-    <% @employee.sorties_today.each do |sortie| %>
-
-    <%= @employee.entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
-
-      <%= sortie.created_at.strftime("%H:%M") %>
-
-      <%= @employee.display_duration(sortie) %>
-
-  	<% end %><br>
-
-   <%= Date.current.yesterday.strftime("%A %d/%m/%Y") %><br>
-
-    <% @employee.attendances.where(:content => "sortie",:created_at => (1.day.ago.beginning_of_day..1.day.ago.end_of_day)).each do |sortie| %>
   
-          
-    <%= @employee.attendances.where("created_at < ?", sortie.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+    <div class="col-md-12">
+      <%= Date.today.strftime("%A %d/%m/%Y") %>
+    </div>
 
-    <%= sortie.created_at.strftime("%H:%M") %>
+      <% @employee.sorties.this_day.each do |sortie| %>
 
-    <%= @employee.display_duration(sortie) %>
+        <div class="row">
+        <div class="col-md-4">
+          <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
 
-    <% end %><br>
+          <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+            <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+            <% end %>
+        </div>
 
-  <%= 2.days.ago.strftime("%A %d/%m/%Y") %><br>
+        <div class="col-md-4">
+          <%= sortie.created_at.strftime("%H:%M") %>
 
+          <%= link_to edit_attendance_path(sortie) do %>
+            <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+            <% end %>
+
+        </div>
+
+        <div class="col-md-4">
+          <%= @employee.display_duration(sortie) %></div>
+
+        </div>
+
+    	<% end %><br>
+
+    <div class="col-md-12">
+      <%= Date.current.yesterday.strftime("%A %d/%m/%Y") %>
+    </div><br>
+
+      <% @employee.sorties.one_day_before.each do |sortie| %>
     
-      <% @employee.attendances.sortie.two_days_before.each do |sortie| %>
-    
-            
-      <%= @employee.attendances.entree.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
+        <div class="row">
+          <div class="col-md-4">      
+            <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
 
-      <%= sortie.created_at.strftime("%H:%M") %>
+            <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+              <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+            <% end %>
+          </div>
 
-      <%= @employee.display_duration(sortie) %>
-    
+          <div class="col-md-4">
+            <%= sortie.created_at.strftime("%H:%M") %>
+
+            <%= link_to edit_attendance_path(sortie) do %>
+              <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+            <% end %>
+          </div>
+
+          <div class="col-md-4">
+            <%= @employee.display_duration(sortie) %></div>
+
+        </div>
 
       <% end %><br>
-    
-  <%= 3.days.ago.strftime("%A %d/%m/%Y") %><br>
-    
-      	<% @employee.attendances.where(:content => "sortie",:created_at => (3.days.ago.beginning_of_day..3.days.ago.end_of_day)).each do |sortie| %>
+
+    <div class="col-md-12">
+    <%= 2.days.ago.strftime("%A %d/%m/%Y") %>
+    </div><br>
+
+        <% @employee.sorties.two_days_before.each do |sortie| %>
+
+          <div class="row">
+            <div class="col-md-4">  
+              <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
             
-            <%= @employee.attendances.where("created_at < ?", sortie.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+              <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+              <% end %>
+            </div>
 
-            <%= sortie.created_at.strftime("%H:%M") %>
+            <div class="col-md-4">
+              <%= sortie.created_at.strftime("%H:%M") %>
 
-            <%= @employee.display_duration(sortie) %><br>
+              <%= link_to edit_attendance_path(sortie) do %>
+                <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+              <% end %>
+            </div>
+
+            <div class="col-md-4">
+              <%= @employee.display_duration(sortie) %></div>
+
+          </div>
+
+        <% end %><br>
+
+    <div class="col-md-12">  
+    <%= 3.days.ago.strftime("%A %d/%m/%Y") %>
+    </div><br>
+
+       	<% @employee.sorties.three_days_before.each do |sortie| %>
+          
+          <div class="row">    
+            <div class="col-md-4">  
+              <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
+
+              <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+            <div class="col-md-4">
+              <%= sortie.created_at.strftime("%H:%M") %>
+
+              <%= link_to edit_attendance_path(sortie) do %>
+                <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+              <% end %>
+            </div>
+
+            <div class="col-md-4">
+              <%= @employee.display_duration(sortie) %></div>
+
+          </div>
 
         <% end %><br>    
 
-	<%= 4.days.ago.strftime("%A %d/%m/%Y") %><br>
-    
-      	<% @employee.attendances.where(:content => "sortie",:created_at => (4.days.ago.beginning_of_day..4.days.ago.end_of_day)).each do |sortie| %>
+    <div class="col-md-12">
+  	 <%= 4.days.ago.strftime("%A %d/%m/%Y") %>
+    </div><br>
+
+        	<% @employee.sorties.four_days_before.each do |sortie| %>
             
-            <%= @employee.attendances.where("created_at < ?", sortie.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+            <div class="row">  
+              <div class="col-md-4">  
+                <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
 
-            <%= sortie.created_at.strftime("%H:%M") %>
+                <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
 
-            <%= @employee.display_duration(sortie) %><br>
+              <div class="col-md-4">
+                <%= sortie.created_at.strftime("%H:%M") %>
 
-        <% end %><br>    
+                <%= link_to edit_attendance_path(sortie) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
 
-	<%= 5.days.ago.strftime("%A %d/%m/%Y") %><br>
-    
-      	<% @employee.attendances.where(:content => "sortie",:created_at => (5.days.ago.beginning_of_day..5.days.ago.end_of_day)).each do |sortie| %>
+              <div class="col-md-4">
+                <%= @employee.display_duration(sortie) %></div>
+
+            </div>
+
+          <% end %><br>    
+
+    <div class="col-md-12">
+  	 <%= 5.days.ago.strftime("%A %d/%m/%Y") %>
+    </div><br>
+      
+        	<% @employee.sorties.five_days_before.each do |sortie| %>
+             
+            <div class="row">  
+              <div class="col-md-4">  
+                <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= sortie.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(sortie) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= @employee.display_duration(sortie) %></div>
+
+            </div>
+
+          <% end %><br>
+
+    <div class="col-md-12">
+  	 <%= 6.days.ago.strftime("%A %d/%m/%Y") %>
+    </div><br>
+      
+        	<% @employee.sorties.six_days_before.each do |sortie| %>
             
-            <%= @employee.attendances.where("created_at < ?", sortie.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+            <div class="row">  
+              <div class="col-md-4">  
+                <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
 
-            <%= sortie.created_at.strftime("%H:%M") %>
+                <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
 
-            <%= @employee.display_duration(sortie) %><br>
+              <div class="col-md-4">
+                <%= sortie.created_at.strftime("%H:%M") %>
 
-        <% end %><br>
+                <%= link_to edit_attendance_path(sortie) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
 
-	<%= 6.days.ago.strftime("%A %d/%m/%Y") %><br>
-    
-      	<% @employee.attendances.where(:content => "sortie",:created_at => (6.days.ago.beginning_of_day..6.days.ago.end_of_day)).each do |sortie| %>
+              <div class="col-md-4">
+                <%= @employee.display_duration(sortie) %></div>
+
+            </div>
+
+          <% end %><br>
+
+      <div class="col-md-12">
+        <%= 7.days.ago.strftime("%A %d/%m/%Y") %>
+      </div><br>
+      
+        	<% @employee.sorties.seven_days_before.each do |sortie| %>
             
-            <%= @employee.attendances.where("created_at < ?", sortie.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+            <div class="row">  
+              <div class="col-md-4">  
+                <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
 
-            <%= sortie.created_at.strftime("%H:%M") %>
+                <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
 
-            <%= @employee.display_duration(sortie) %><br>
+              <div class="col-md-4">
+                <%= sortie.created_at.strftime("%H:%M") %>
 
-        <% end %><br>
+                <%= link_to edit_attendance_path(sortie) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
 
-    <%= 7.days.ago.strftime("%A %d/%m/%Y") %><br>
-    
-      	<% @employee.attendances.where(:content => "sortie",:created_at => (7.days.ago.beginning_of_day..7.days.ago.end_of_day)).each do |sortie| %>
+              <div class="col-md-4">
+                <%= @employee.display_duration(sortie) %></div>
+
+            </div>
+
+          <% end %><br>
+
+      <div class="col-md-12">
+        <%= 8.days.ago.strftime("%A %d/%m/%Y") %>
+      </div><br>
+      
+          <% @employee.sorties.eight_days_before.each do |sortie| %>
             
-            <%= @employee.attendances.where("created_at < ?", sortie.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
+            <div class="row">  
+              <div class="col-md-4">  
+                <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
 
-            <%= sortie.created_at.strftime("%H:%M") %>
+                <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
 
-            <%= @employee.display_duration(sortie) %><br>
+              <div class="col-md-4">
+                <%= sortie.created_at.strftime("%H:%M") %>
 
-        <% end %><br>
+                <%= link_to edit_attendance_path(sortie) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= @employee.display_duration(sortie) %></div>
+
+            </div>
+
+          <% end %><br>
+
+      <div class="col-md-12">
+        <%= 9.days.ago.strftime("%A %d/%m/%Y") %>
+      </div><br>
+      
+          <% @employee.sorties.nine_days_before.each do |sortie| %>
+            
+            <div class="row">  
+              <div class="col-md-4">  
+                <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= sortie.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(sortie) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= @employee.display_duration(sortie) %></div>
+
+            </div>
+
+          <% end %><br>
+
+      <div class="col-md-12">
+        <%= 10.days.ago.strftime("%A %d/%m/%Y") %>
+      </div><br>
+      
+          <% @employee.sorties.ten_days_before.each do |sortie| %>
+            
+            <div class="row">  
+              <div class="col-md-4">  
+                <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= sortie.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(sortie) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= @employee.display_duration(sortie) %></div>
+
+            </div>
+
+          <% end %><br>
+
+      <div class="col-md-12">
+        <%= 11.days.ago.strftime("%A %d/%m/%Y") %>
+      </div><br>
+      
+          <% @employee.sorties.eleven_days_before.each do |sortie| %>
+            
+            <div class="row">  
+              <div class="col-md-4">  
+                <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= sortie.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(sortie) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= @employee.display_duration(sortie) %></div>
+
+            </div>
+
+          <% end %><br>
+
+      <div class="col-md-12">
+        <%= 12.days.ago.strftime("%A %d/%m/%Y") %>
+      </div><br>
+      
+          <% @employee.sorties.twelve_days_before.each do |sortie| %>
+            
+            <div class="row">  
+              <div class="col-md-4">  
+                <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= sortie.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(sortie) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= @employee.display_duration(sortie) %></div>
+
+            </div>
+
+          <% end %><br>
+
+      <div class="col-md-12">
+        <%= 13.days.ago.strftime("%A %d/%m/%Y") %>
+      </div><br>
+      
+          <% @employee.sorties.thirteen_days_before.each do |sortie| %>
+            
+            <div class="row">  
+              <div class="col-md-4">  
+                <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= sortie.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(sortie) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= @employee.display_duration(sortie) %></div>
+
+            </div>
+
+          <% end %><br>
+
+      <div class="col-md-12">
+        <%= 14.days.ago.strftime("%A %d/%m/%Y") %>
+      </div><br>
+      
+          <% @employee.sorties.fourteen_days_before.each do |sortie| %>
+            
+            <div class="row">  
+              <div class="col-md-4">  
+                <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= sortie.created_at.strftime("%H:%M") %>
+
+                <%= link_to edit_attendance_path(sortie) do %>
+                  <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %>
+              </div>
+
+              <div class="col-md-4">
+                <%= @employee.display_duration(sortie) %></div>
+
+            </div>
+
+          <% end %><br>
+
+</div>
 
 <% else %>
 

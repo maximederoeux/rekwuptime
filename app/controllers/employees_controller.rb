@@ -14,6 +14,7 @@ class EmployeesController < ApplicationController
     @employee = Employee.find(params[:id])
     @attendance = Attendance.new
     @attendances = @employee.attendances
+    @entrees = @employee.entrees.order('created_at ASC')
   end
 
   # GET /employees/new
@@ -23,7 +24,8 @@ class EmployeesController < ApplicationController
 
   # GET /employees/1/edit
   def edit
-    @employee = Employee.find(params[:id])   
+    @employee = Employee.find(params[:id])
+    @attendance = @employee.attendance
   end
 
   # POST /employees

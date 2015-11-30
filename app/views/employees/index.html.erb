@@ -22,6 +22,7 @@
         <% @employees.each do |employee| %>
           <tr>
             <td><%= employee.id %></td>
+            
             <td><%= link_to employee.full_name, employee_path(employee), class: "btn btn-xs btn-link" %>
               <%= link_to edit_employee_path(employee) do %>
               <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
