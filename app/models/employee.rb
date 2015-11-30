@@ -90,15 +90,44 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_minutes(attendance)
-		self.duration_in_minutes(attendance) - (self.duration_in_hours(attendance))*60
+		duration_in_minutes(attendance) - (duration_in_hours(attendance))*60
 	end
 
 	def display_duration_seconds(attendance)
-		self.duration(attendance) - (self.duration_in_minutes(attendance)*60)	
+		duration(attendance) - (duration_in_minutes(attendance)*60)	
 	end
 
 	def display_duration(attendance)
-		"#{self.duration_in_hours(attendance)}h#{self.display_duration_minutes(attendance)}m#{self.display_duration_seconds(attendance)}s"
+		"#{duration_in_hours(attendance)}h#{display_duration_minutes(attendance)}m#{display_duration_seconds(attendance)}s"
+	end
+	
+	def total_duration
+		# From zero, sum up each duration for an employee
+		
+	    total_duration = 0
+	    attendances.sortie.each do |sortie|
+	      total_duration += duration(sortie)
+	    end
+	    total_duration
+  	end
+
+	def total_duration_in_minutes
+		(total_duration / 60).floor
 	end
 
+	def total_duration_in_hours
+		(total_duration_in_minutes / 60).floor
+	end
+
+	def display_total_duration_minutes
+		total_duration_in_minutes - total_duration_in_hours*60
+	end
+
+	def display_total_duration_seconds
+		total_duration - total_duration_in_minutes*60
+	end
+
+	def display_total_duration
+		"#{total_duration_in_hours}h#{display_total_duration_minutes}m#{display_total_duration_seconds}s"
+	end
 end
