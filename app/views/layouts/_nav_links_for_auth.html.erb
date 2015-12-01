@@ -1,5 +1,6 @@
 <% if user_signed_in? %>   
-  <li><%= link_to 'Nouvel Employé', new_employee_path %></li>
+  <li><%= link_to 'Accueil', root_path %></li>
+  <li><%= link_to 'Mouvements', attendances_path %></li>
   <li><%= link_to 'Rapports', users_path %></li>
   <li><%= link_to 'Déconnexion', destroy_user_session_path, :method=>'delete' %></li>
 <% else %>

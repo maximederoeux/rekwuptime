@@ -60,6 +60,11 @@ class Employee < ActiveRecord::Base
     	"##{id} - #{full_name}"
   	end
 
+
+
+	
+# NEXT 500 LINES FOR CALCULATION OF DURATIONS
+
 	# calculation
 
 	# def duration
@@ -68,6 +73,9 @@ class Employee < ActiveRecord::Base
 
 	# 	self.attendances.sortie.last.created_at - self.attendances.entree.where("created_at < ?", self.attendances.sortie.created_at).last.created_at
 	# end
+
+
+
 
 	def duration(attendance)
 		if attendance.sortie
@@ -80,6 +88,41 @@ class Employee < ActiveRecord::Base
 			self.attendances.entree.where("created_at < ?", attendance.created_at).last
 		end
 	end
+
+	def next_sortie(attendance)
+		if attendance.entree
+			self.attendances.sortie.where("created_at > ?", attendance.created_at).first
+		end
+	end
+
+	def duration_entree(attendance)
+		if next_sortie(attendance)
+			next_sortie(attendance).created_at - attendance.created_at
+		end		
+	end
+
+	def total_duration_entree
+		# From zero, sum up each duration for an employee
+		
+	    total_duration_entree = 0
+	    attendances.entree.each do |total|
+	      total_duration_entree += duration_entree(total)
+	    end
+	    total_duration_entree
+  	end
+
+# <%= (@employee.next_sortie(entree).created_at - entree.created_at) if @employee.next_sortie(entree) %>
+	
+	def total_duration
+		# From zero, sum up each duration for an employee
+		
+	    total_duration = 0
+	    attendances.sortie.each do |sortie|
+	      total_duration += duration(sortie)
+	    end
+	    total_duration
+  	end
+
 
 	def duration_in_minutes(attendance)
 		(duration(attendance) / 60).floor
@@ -100,7 +143,7 @@ class Employee < ActiveRecord::Base
 	def display_duration(attendance)
 		"#{duration_in_hours(attendance)}h#{display_duration_minutes(attendance)}m#{display_duration_seconds(attendance)}s"
 	end
-	
+
 	def total_duration
 		# From zero, sum up each duration for an employee
 		
@@ -110,6 +153,26 @@ class Employee < ActiveRecord::Base
 	    end
 	    total_duration
   	end
+
+	# def total_duration_per_day
+	# 	total_duration_per_day = 0
+	# 	while attendances.sortie.created_at.day == attendances.previous_entree.created_at
+	# 	total_duration_per_day += duration(attendance)
+	# 	end
+	# end
+		
+	def daily_duration(day)
+		# total of all durations for which entree is on the same day
+
+	end
+		
+
+
+	def duration_late_sortie(attendance)
+		if previous_entree(attendance).created_at.day < attendance.created_at.day
+			(attendance.created_at - previous_entree(attendance).created_at).floor
+		end
+	end
 
 	def total_duration_in_minutes
 		(total_duration / 60).floor

@@ -13,7 +13,12 @@
 
       
       <%= f.input :created_at %>
-	    <%= f.input :content %>
+	    
+
+      <select class="form-control">
+        <option><%= f.input :content, :value => "entree" %></option>
+        <option><%= f.input :content, :value => "sortie" %></option>        
+      </select>
 
   
   	<div class="form-actions">

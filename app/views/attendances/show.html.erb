@@ -1,14 +1,33 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Employee:</strong>
-  <%= @attendance.employee_id %>
-</p>
+<% if user_signed_in? %>
 
-<p>
-  <strong>In:</strong>
-  <%= @attendance.in %>
-</p>
+	<%= simple_form_for(@attendance) do |f| %>
+	  <%= f.error_notification %>
+    	
+      <%= f.collection_select :employee_id, Employee.all, :id, :full_name, {prompt: true} %>
+     
+      <%= f.input :created_at %>
+
+      <!-- <select class="form-control">
+        <option><%= f.input :content, :value => "entree" %></option>
+        <option><%= f.input :content, :value => "sortie" %></option>        
+      </select> -->
+
+  
+	  	<div class="form-actions">
+
+	    	<%= f.button :submit, class: "btn btn-default" %>
+
+	  	</div>
+
+  	<% end %>
 
 <%= link_to 'Edit', edit_attendance_path(@attendance) %> |
 <%= link_to 'Back', attendances_path %>
+
+<% else %>
+
+
+
+<% end %>

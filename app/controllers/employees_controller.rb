@@ -25,7 +25,7 @@ class EmployeesController < ApplicationController
   # GET /employees/1/edit
   def edit
     @employee = Employee.find(params[:id])
-    @attendance = @employee.attendance
+    # @attendance = @employee.attendance
   end
 
   # POST /employees

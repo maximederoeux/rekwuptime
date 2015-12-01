@@ -1,15 +1,15 @@
-<p id="notice"><%= notice %></p>
-
 <% if user_signed_in? %>
 
-<h1>Listing Attendances</h1>
+<h1>Tous les mouvements</h1>
 
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Employee</th>
-      <th>In</th>
-      <th colspan="3"></th>
+      <th>Travailleur</th>
+      <th>Mouvement</th>
+      <th>Date</th>
+      <th>Heure</th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
@@ -22,8 +22,7 @@
         <td><%= attendance.created_at.strftime("%H:%M") %></td>
         <td><%= link_to 'Show', attendance %></td>
         <td><%= link_to 'Edit', edit_attendance_path(attendance) %></td>
-        <td><%= link_to 'Destroy', attendance, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+        </tr>
     <% end %>
   </tbody>
 </table>
@@ -34,7 +33,13 @@
 
 <% else %>
 
-blabla
+<h2 class="text-center">Vous devez être connecté pour continuer.</h2><br>
+<h2 class="text-center">Sinon, vous pouvez cliquer sur Retour.</h2>
+<p>
+<h4 class="text-center">
+  <%= link_to 'Retour', employees_path, class: "btn btn-warning btn-lg" %>
+</h4>
+</p>
 
 <% end %>
 
