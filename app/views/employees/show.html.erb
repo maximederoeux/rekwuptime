@@ -1,12 +1,30 @@
 <% if user_signed_in? %>
 
 
+<%= @employee.daily_duration(&:daily_sort) %>
+
 <h4><%= @employee.name %> <%= @employee.first_name %><br>
 Status: <%= @employee.status %>
 </h4>
 
 
-<% @employee.entrees.each do |entree| %>
+
+
+
+<% @employee.entrees.this_day.each do |entree| %>
+
+  <%= entree.created_at %>
+  <%= @employee.next_sortie(entree).created_at if @employee.next_sortie(entree) %>
+  <%= @employee.duration_entree(entree) %>
+  <%= @employee.total_duration_entree %><br>
+
+
+
+<% end %>
+
+
+
+<% @employee.entrees.one_day_before.each do |entree| %>
 
 <%= entree.created_at %>
 <%= @employee.next_sortie(entree).created_at if @employee.next_sortie(entree) %>

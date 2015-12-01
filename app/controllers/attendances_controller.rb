@@ -12,6 +12,7 @@ class AttendancesController < ApplicationController
   # GET /attendances/1
   # GET /attendances/1.json
   def show
+
   end
 
   # GET /attendances/new
@@ -42,6 +43,12 @@ class AttendancesController < ApplicationController
       end
     end
   end
+
+  def list  
+    @attendances = Attendance.find :all
+  end
+
+
 
   # PATCH/PUT /attendances/1
   # PATCH/PUT /attendances/1.json

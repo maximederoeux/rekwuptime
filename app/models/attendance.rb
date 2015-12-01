@@ -57,5 +57,9 @@ end
 		(sortie.created_at - employee.entrees.where("created_at < ?", sortie.created_at).last.created_at)/3600
 	end
 
+	def daily_sort
+		self.created_at.strftime('%d/%m/%Y')
+	end
+
 
 end

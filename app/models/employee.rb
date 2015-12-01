@@ -102,7 +102,7 @@ class Employee < ActiveRecord::Base
 	end
 
 	def total_duration_entree
-		# From zero, sum up each duration for an employee
+		
 		
 	    total_duration_entree = 0
 	    attendances.entree.each do |total|
@@ -111,8 +111,7 @@ class Employee < ActiveRecord::Base
 	    total_duration_entree
   	end
 
-# <%= (@employee.next_sortie(entree).created_at - entree.created_at) if @employee.next_sortie(entree) %>
-	
+
 	def total_duration
 		# From zero, sum up each duration for an employee
 		
@@ -122,6 +121,18 @@ class Employee < ActiveRecord::Base
 	    end
 	    total_duration
   	end
+
+  	def daily_duration(&:daily_sort)
+  		# For entrees grouped by day, sum up durations calculated from the entrees
+  		daily_duration = 0
+  		self.entrees.group_by(&:daily_sort).each do |daily_sort, entrees|
+  			entrees.each do |entree|
+  				daily_duration += duration_entree(entree)
+  			end
+  			daily_duration
+  		end	
+  	end
+
 
 
 	def duration_in_minutes(attendance)
