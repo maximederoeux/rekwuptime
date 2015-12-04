@@ -2,19 +2,14 @@
 
 <% if user_signed_in? %>
 
-<% @employees.each do |employee| %>
-
-  <h4><%= employee.full_name %></h4><br>
-  <% employee.attendances.group_by(&:daily_sort).each do |daily_sort, attendances| %>
-    <div id="daily_sort">
-      <%= daily_sort.to_date.strftime("%A %d/%m/%Y") %><br>
-      <%= attendances %><br>
-    </div>
-  <% end %>
 
 
 
-<% end %>
+
+
+
+
+
   <h1>Travailleurs enregistrés</h1>
 
   <%= link_to 'Ajouter un travailleur', new_employee_path, class: "btn btn-default" %>
@@ -82,16 +77,25 @@
               </button>
             <% end %>
             
-              
-              
-            
-          
-
         </div>
 
       <% end %>
 
   </div>
+
+
+
+</div>
+
+<br>
+<br>
+<br>
+<br>
+
+
+<div class="container text-center">
+
+<%= button_to "Cliquez ici si votre nom n'est pas actif", employees_path, :method => :get, class: "btn btn-lg btn-success btn-block" %>
 
 </div>
 

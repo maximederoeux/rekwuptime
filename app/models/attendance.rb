@@ -19,6 +19,7 @@ class Attendance < ActiveRecord::Base
 	scope :twelve_days_before, lambda {where(:created_at => (12.days.ago.beginning_of_day..12.days.ago.end_of_day))}
 	scope :thirteen_days_before, lambda {where(:created_at => (13.days.ago.beginning_of_day..13.days.ago.end_of_day))}
 	scope :fourteen_days_before, lambda {where(:created_at => (14.days.ago.beginning_of_day..14.days.ago.end_of_day))}
+	scope :fifteen_days_before, lambda {where(:created_at => (15.days.ago.beginning_of_day..15.days.ago.end_of_day))}
 	
 
 

@@ -1,92 +1,183 @@
 <% if user_signed_in? %>
 
 
-<%= @employee.daily_duration(&:daily_sort) %>
 
-<h4><%= @employee.name %> <%= @employee.first_name %><br>
-Status: <%= @employee.status %>
-</h4>
+<h4><%= @employee.name %> <%= @employee.first_name %> (<%= @employee.status %>)</h4><br>
 
 
-
-
-
-<% @employee.entrees.this_day.each do |entree| %>
-
-  <%= entree.created_at %>
-  <%= @employee.next_sortie(entree).created_at if @employee.next_sortie(entree) %>
-  <%= @employee.duration_entree(entree) %>
-  <%= @employee.total_duration_entree %><br>
-
-
-
-<% end %>
-
-
-
-<% @employee.entrees.one_day_before.each do |entree| %>
-
-<%= entree.created_at %>
-<%= @employee.next_sortie(entree).created_at if @employee.next_sortie(entree) %>
-<%= @employee.duration_entree(entree) %>
-<%= @employee.total_duration_entree %><br>
-
-
-<% end %>
 
 <div class="container-fluid">
-
-  <ul class="list-group">
-    <li class="list-group-item list-group-item-heading">
-      <h4 class="list-group-item-heading">
-        <div class="row">
-          <div class="col-md-3">
-            <%= "Date d'entrée" %></div>
-          <div class="col-md-3">
-            <%= "Heure d'entrée" %></div>
-          <div class="col-md-3">
-            <%= "Heure de sortie" %></div>
-          <div class="col-md-3">
-            <%= "Durée" %></div>
-        </div></h4>
-    </li>
-
-    <% @employee.sorties.each do |sortie| %>
-
-
-    <li class="list-group-item">
-    
-
-
-      <div class="row">
-        <div class="col-md-3">
-          <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%A %d/%m/%Y") %>
-
-          
-          
+  <div class="row">
+    <div class="col-md-6">
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-heading">
+          <h4 class="list-group-item-heading">
+            <div class="row">
+              <div class="col-md-6">
+                <%= "Semaine écoulée" %>
+              </div>
+              <div class="col-md-6 text-center">
+                <%= "Temps total presté" %>
+              </div>
             </div>
-        <div class="col-md-3">
-          <%= @entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
-          <%= link_to edit_attendance_path(@entrees.where("created_at < ?", sortie.created_at).last) do %>
-              <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
-              <% end %>
-        </div>
-        <div class="col-md-3">
-          <%= sortie.created_at.strftime("%H:%M") %>
-          <%= link_to edit_attendance_path(sortie) do %>
-              <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
-              <% end %>
-        </div>
-        <div class="col-md-3">
-          <%= @employee.display_duration(sortie) %></div><br>
-          
+          </h4>
+        </li>
+      </ul>
+    </div>
 
-      </div>
-    </li>
-    <% end %>
-  </ul>
+    <div class="col-md-6">
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-heading">
+          <h4 class="list-group-item-heading">
+            <div class="row">
+              <div class="col-md-6">
+                <%= "Semaine précédente" %>
+              </div>
+              <div class="col-md-6 text-center">
+                <%= "Temps total presté" %>
+              </div>
+            </div>
+          </h4>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="col-md-6">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-md-6">
+              <%= "Aujourd'hui" %><br>
+              <%= "Hier" %><br>
+              <%= "Avant-hier" %><br>
+              <%= 3.days.ago.strftime("%A %d/%m/%Y") %><br>
+              <%= 4.days.ago.strftime("%A %d/%m/%Y") %><br>
+              <%= 5.days.ago.strftime("%A %d/%m/%Y") %><br>
+              <%= 6.days.ago.strftime("%A %d/%m/%Y") %><br>
+              <%= 7.days.ago.strftime("%A %d/%m/%Y") %><br>
+            </div>
+
+            <div class="col-md-6 text-center">
+             <%= @employee.display_duration_entree_this_day %><br>
+             <%= @employee.display_duration_entree_one_day_before %><br>
+             <%= @employee.display_duration_entree_two_days_before %><br>
+             <%= @employee.display_duration_entree_three_days_before %><br>
+             <%= @employee.display_duration_entree_four_days_before %><br>
+             <%= @employee.display_duration_entree_five_days_before %><br>
+             <%= @employee.display_duration_entree_six_days_before %><br>
+             <%= @employee.display_duration_entree_seven_days_before %><br>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
   
+
+    <div class="col-md-6">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-md-6">     
+              <%= 8.days.ago.strftime("%A %d/%m/%Y") %><br>
+              <%= 9.days.ago.strftime("%A %d/%m/%Y") %><br>
+              <%= 10.days.ago.strftime("%A %d/%m/%Y") %><br>
+              <%= 11.days.ago.strftime("%A %d/%m/%Y") %><br>
+              <%= 12.days.ago.strftime("%A %d/%m/%Y") %><br>
+              <%= 13.days.ago.strftime("%A %d/%m/%Y") %><br>
+              <%= 14.days.ago.strftime("%A %d/%m/%Y") %><br>
+              <%= 15.days.ago.strftime("%A %d/%m/%Y") %><br>
+            </div>
+        
+            <div class="col-md-6 text-center">
+              <%= @employee.display_duration_entree_eight_days_before %><br>
+              <%= @employee.display_duration_entree_nine_days_before %><br>
+              <%= @employee.display_duration_entree_ten_days_before %><br>
+              <%= @employee.display_duration_entree_eleven_days_before %><br>
+              <%= @employee.display_duration_entree_twelve_days_before %><br>
+              <%= @employee.display_duration_entree_thirteen_days_before %><br>
+              <%= @employee.display_duration_entree_fourteen_days_before %><br>
+              <%= @employee.display_duration_entree_fifteen_days_before %><br>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+
+  </div>
 </div>
+  
+
+<!-- LIST OF ALLENTREES AND SORTIES WITH EDIT BUTTON  -->
+
+  <div class="container-fluid">
+
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-heading">
+        <h4 class="list-group-item-heading">
+          <div class="row">
+            <div class="col-md-3">
+              <%= "Date d'entrée" %></div>
+            <div class="col-md-3">
+              <%= "Heure d'entrée" %></div>
+            <div class="col-md-3">
+              <%= "Heure de sortie" %></div>
+            <div class="col-md-3">
+              <%= "Durée" %></div>
+          </div>
+        </h4>
+      </li>
+
+
+      <% @employee.entrees.each do |entree| %>
+
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-md-3">
+              <%= entree.created_at.strftime("%A %d/%m/%Y") %>
+
+
+            </div>
+
+            <div class="col-md-3">     
+              <%= entree.created_at.strftime("%H:%M") %>
+
+              <%= link_to edit_attendance_path(entree) do %>
+              <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+              <% end %>
+
+            </div>
+
+            <div class="col-md-3">
+                <%= @employee.next_sortie(entree).created_at.strftime("%H:%M") if @employee.next_sortie(entree) %>
+
+                  <% if @employee.next_sortie(entree) %>
+
+                      <%= link_to edit_attendance_path(@employee.next_sortie(entree)) do %>
+                      <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                      <% end %>
+                  <% else %>
+                      Présent en ce moment
+                  <% end %>
+
+            </div>
+
+            <div class="col-md-3">
+              <%= @employee.display_duration_entree(entree) %>
+            </div>
+          </div>
+          
+        </li>
+      <% end %>
+    </ul>
+    
+  </div>
+  
+
+  
+
+
+    
 
 
 
@@ -94,72 +185,72 @@ Status: <%= @employee.status %>
 
 <% else %>
 
-<div class="jumbotron">
+  <div class="jumbotron">
 
-<p>
-  <strong>Nom:</strong>
-  <%= @employee.name %>
-</p>
+  <p>
+    <strong>Nom:</strong>
+    <%= @employee.name %>
+  </p>
 
-<p>
-  <strong>Prénom:</strong>
-  <%= @employee.first_name %>
-</p>
+  <p>
+    <strong>Prénom:</strong>
+    <%= @employee.first_name %>
+  </p>
 
-<p>
-  <strong>Statut:</strong>
-  <%= @employee.status %>
-</p>
+  <p>
+    <strong>Statut:</strong>
+    <%= @employee.status %>
+  </p>
 
-<p>
-  <strong><%= @employee.last_move_content %> le <%= @employee.last_move_day %> <%= @employee.last_move_time.strftime("%d/%m/%Y") %> à <%= @employee.last_move_time.strftime("%H:%M") %></strong>
- </p>
+  <p>
+    <strong><%= @employee.last_move_content %> le <%= @employee.last_move_day %> <%= @employee.last_move_time.strftime("%d/%m/%Y") %> à <%= @employee.last_move_time.strftime("%H:%M") %></strong>
+   </p>
 
-</div>
+  </div>
 
-<h1 class="text-center">
-<%= Time.now.strftime("%A %d/%m/%Y") %><br>
-<%= Time.now.strftime("%H:%M") %>
-</h1>
+  <h1 class="text-center">
+  <%= Time.now.strftime("%A %d/%m/%Y") %><br>
+  <%= Time.now.strftime("%H:%M") %>
+  </h1>
 
-<h3 class="text-center">
+  <h3 class="text-center">
 
-	<% if @employee.attendances.any? && @employee.attendances.last.content == "entree" %>
-	<%# Si utilisateur déjà in, bouton sortie %>
+  	<% if @employee.attendances.any? && @employee.attendances.last.content == "entree" %>
+  	<%# Si utilisateur déjà in, bouton sortie %>
 
-		<%= simple_form_for(@attendance) do |f| %>
-		  <%= f.error_notification %>    
+  		<%= simple_form_for(@attendance) do |f| %>
+  		  <%= f.error_notification %>    
 
-		  	<%= f.hidden_field :employee_id, :value => @employee.id %>
-		  	<%= f.hidden_field :validation_code, :value => @employee.validation_code %>
-		    <%= f.hidden_field :content, :value => "sortie" %>	 
+  		  	<%= f.hidden_field :employee_id, :value => @employee.id %>
+  		  	<%= f.hidden_field :validation_code, :value => @employee.validation_code %>
+  		    <%= f.hidden_field :content, :value => "sortie" %>	 
 
-		  <div class="form-actions">
-		    <%= f.submit "Sortie", class: "btn btn-success btn-lg" %>
-		  </div>
+  		  <div class="form-actions">
+  		    <%= f.submit "Sortie", class: "btn btn-success btn-lg" %>
+  		  </div>
 
-		<% end %><br> 
-		<strong><%= @employee.first_name %>, pour l'instant, vous êtes dedans.</strong>
+  		<% end %><br> 
+  		<strong><%= @employee.first_name %>, pour l'instant, vous êtes dedans.</strong>
 
-	<% else %>
-	<%# Si utilisateur out, bouton entrée %>
-		<%= simple_form_for(@attendance) do |f| %>
-		  <%= f.error_notification %>	
-		  	<%= f.hidden_field :employee_id, :value => @employee.id %>    
-		    <%= f.hidden_field :content, :value => "entree" %>	  
-		  <div class="form-actions">
-		    <%= f.submit "Entrée", class: "btn btn-success btn-lg" %>
-		  </div>
-		<% end %><br> 
-		<strong><%= @employee.first_name %>, pour l'instant, vous êtes dehors.</strong>
+  	<% else %>
+  	<%# Si utilisateur out, bouton entrée %>
+  		<%= simple_form_for(@attendance) do |f| %>
+  		  <%= f.error_notification %>	
+  		  	<%= f.hidden_field :employee_id, :value => @employee.id %>    
+  		    <%= f.hidden_field :content, :value => "entree" %>	  
+  		  <div class="form-actions">
+  		    <%= f.submit "Entrée", class: "btn btn-success btn-lg" %>
+  		  </div>
+  		<% end %><br> 
+  		<strong><%= @employee.first_name %>, pour l'instant, vous êtes dehors.</strong>
 
-	<% end %>
+  	<% end %>
 
-</h3>
-<p>
-<h4 class="text-center">
-<%= link_to 'Retour', employees_path, class: "btn btn-warning btn-lg" %>
-</h4>
-</p>
+  </h3>
+  <p>
+  <h4 class="text-center">
+  <%= link_to 'Retour', employees_path, class: "btn btn-warning btn-lg" %>
+  </h4>
+  </p>
 
 <% end %>

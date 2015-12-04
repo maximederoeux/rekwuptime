@@ -7,21 +7,19 @@ class Employee < ActiveRecord::Base
     def full_name
     	"#{first_name} #{name}"
     end
-    
 
-    # list of all the outs of today
-	def sorties_today
-		self.sorties.this_day
-	end
-
+    def full_name_with_id
+    	"##{id} - #{full_name}"
+  	end
+   
 	def entrees
-		self.attendances.entree		
+		self.attendances.entree.order('created_at DESC')		
 	end
 
 	def sorties
 		self.attendances.sortie
 	end	
-	
+
 	def last_move_content
 		if self.attendances.last.content == "entree"
 			"Dernière entrée"
@@ -33,7 +31,6 @@ class Employee < ActiveRecord::Base
 	def last_move_time
 		self.attendances.last.created_at
 	end
-
 
 	def last_move_day
 		if self.last_move_time.strftime("%u") == '7'
@@ -55,85 +52,34 @@ class Employee < ActiveRecord::Base
 	end
 
 	
-
-	def full_name_with_id
-    	"##{id} - #{full_name}"
-  	end
-
-
-
-	
 # NEXT 500 LINES FOR CALCULATION OF DURATIONS
 
-	# calculation
-
-	# def duration
-	# 	# time of one particular sortie - time of previous entree of the employee
-	# 	if self.attendances.sortie
-
-	# 	self.attendances.sortie.last.created_at - self.attendances.entree.where("created_at < ?", self.attendances.sortie.created_at).last.created_at
-	# end
-
-
-
-
-	def duration(attendance)
-		if attendance.sortie
-			(attendance.created_at - previous_entree(attendance).created_at).floor
-		end
-	end
-
 	def previous_entree(attendance)
+		# entree of an employee before a sortie used for calculation of duration
+
 		if attendance.sortie
 			self.attendances.entree.where("created_at < ?", attendance.created_at).last
 		end
 	end
 
 	def next_sortie(attendance)
+		# sortie of an employee after an entree used for calculation of duration based on the entree
+
 		if attendance.entree
 			self.attendances.sortie.where("created_at > ?", attendance.created_at).first
 		end
 	end
 
-	def duration_entree(attendance)
-		if next_sortie(attendance)
-			next_sortie(attendance).created_at - attendance.created_at
-		end		
+
+# CALCULATION AND DISPLAY OF DURATION FOR ONE MOVE OF AN EMPLOYEE BASED ON SORTIES
+
+	def duration(attendance)
+		# duration between two moves based on the sortie
+
+		if attendance.sortie
+			(attendance.created_at - previous_entree(attendance).created_at).floor
+		end
 	end
-
-	def total_duration_entree
-		
-		
-	    total_duration_entree = 0
-	    attendances.entree.each do |total|
-	      total_duration_entree += duration_entree(total)
-	    end
-	    total_duration_entree
-  	end
-
-
-	def total_duration
-		# From zero, sum up each duration for an employee
-		
-	    total_duration = 0
-	    attendances.sortie.each do |sortie|
-	      total_duration += duration(sortie)
-	    end
-	    total_duration
-  	end
-
-  	def daily_duration(&:daily_sort)
-  		# For entrees grouped by day, sum up durations calculated from the entrees
-  		daily_duration = 0
-  		self.entrees.group_by(&:daily_sort).each do |daily_sort, entrees|
-  			entrees.each do |entree|
-  				daily_duration += duration_entree(entree)
-  			end
-  			daily_duration
-  		end	
-  	end
-
-
 
 	def duration_in_minutes(attendance)
 		(duration(attendance) / 60).floor
@@ -151,39 +97,79 @@ class Employee < ActiveRecord::Base
 		duration(attendance) - (duration_in_minutes(attendance)*60)	
 	end
 
-	def display_duration(attendance)
-		"#{duration_in_hours(attendance)}h#{display_duration_minutes(attendance)}m#{display_duration_seconds(attendance)}s"
+	def display_duration(attendance)  	def duration_entree_this_day 
+  		duration_entree_this_day = 0
+		attendances.entree.this_day.each do |entree|
+			if next_sortie(entree)
+			duration_entree_this_day += duration_entree(entree)
+			end
+		end
+		duration_entree_this_day	
+  	end
+
+	def duration_entree_this_day_in_minutes
+		(duration_entree_this_day / 60).floor
 	end
 
+	def duration_entree_this_day_in_hours
+		(duration_entree_this_day_in_minutes / 60).floor
+	end
+
+
+	def display_duration_entree_this_day_minutes		
+		duration_entree_this_day_in_minutes - duration_entree_this_day_in_hours*60		
+	end
+
+	def display_duration_entree_this_day_seconds
+		duration_entree_this_day - duration_entree_this_day_in_minutes*60
+	end
+
+	def display_duration_entree_this_day # OK
+		"#{duration_entree_this_day_in_hours}h#{display_duration_entree_this_day_minutes}m#{display_duration_entree_this_day_seconds}s"
+	end
+		"#{duration_in_hours(attendance)}h#{display_duration_minutes(attendance)}m#{display_duration_seconds(attendance)}s"
+	end	
+
+# CALCULATION AND DISPLAY OF TOTAL DURATION FOR ALL MOVES OF AN EMPLOYEE BASED ON SORTIES
+
 	def total_duration
-		# From zero, sum up each duration for an employee
+		# total duration of attendance for an employee based on the entrees
 		
 	    total_duration = 0
 	    attendances.sortie.each do |sortie|
 	      total_duration += duration(sortie)
 	    end
-	    total_duration
+	    total_duration  	def duration_entree_this_day 
+  		duration_entree_this_day = 0
+		attendances.entree.this_day.each do |entree|
+			if next_sortie(entree)
+			duration_entree_this_day += duration_entree(entree)
+			end
+		end
+		duration_entree_this_day	
   	end
 
-	# def total_duration_per_day
-	# 	total_duration_per_day = 0
-	# 	while attendances.sortie.created_at.day == attendances.previous_entree.created_at
-	# 	total_duration_per_day += duration(attendance)
-	# 	end
-	# end
-		
-	def daily_duration(day)
-		# total of all durations for which entree is on the same day
-
+	def duration_entree_this_day_in_minutes
+		(duration_entree_this_day / 60).floor
 	end
-		
 
-
-	def duration_late_sortie(attendance)
-		if previous_entree(attendance).created_at.day < attendance.created_at.day
-			(attendance.created_at - previous_entree(attendance).created_at).floor
-		end
+	def duration_entree_this_day_in_hours
+		(duration_entree_this_day_in_minutes / 60).floor
 	end
+
+
+	def display_duration_entree_this_day_minutes		
+		duration_entree_this_day_in_minutes - duration_entree_this_day_in_hours*60		
+	end
+
+	def display_duration_entree_this_day_seconds
+		duration_entree_this_day - duration_entree_this_day_in_minutes*60
+	end
+
+	def display_duration_entree_this_day # OK
+		"#{duration_entree_this_day_in_hours}h#{display_duration_entree_this_day_minutes}m#{display_duration_entree_this_day_seconds}s"
+	end
+  	end
 
 	def total_duration_in_minutes
 		(total_duration / 60).floor
@@ -205,424 +191,536 @@ class Employee < ActiveRecord::Base
 		"#{total_duration_in_hours}h#{display_total_duration_minutes}m#{display_total_duration_seconds}s"
 	end
 
-	def total_duration_this_day
-		total_duration_this_day = 0
-		attendances.sortie.this_day.each do |sortie|
-			total_duration_this_day += duration(sortie)
+# CALCULATION AND DISPLAY OF DURATION FOR ONE MOVE OF AN EMPLOYEE BASED ON SORTIES
+
+
+	def duration_entree(attendance)
+		# duration between two moves based on the entree
+
+		if next_sortie(attendance)
+			(next_sortie(attendance).created_at - attendance.created_at).floor
+		end		
+	end
+
+	def duration_entree_in_minutes(attendance)
+		if next_sortie(attendance)
+			(duration_entree(attendance) / 60).floor
 		end
-		total_duration_this_day		
 	end
 
-	def total_duration_this_day_in_minutes
-		(total_duration_this_day / 60).floor
-	end
-
-	def total_duration_this_day_in_hours
-		(total_duration_this_day_in_minutes / 60).floor
-	end
-
-	def display_total_duration_this_day_minutes
-		total_duration_this_day_in_minutes - total_duration_this_day_in_hours*60
-	end
-
-	def display_total_duration_this_day_seconds
-		total_duration_this_day - total_duration_this_day_in_minutes*60
-	end
-
-	def display_total_duration_this_day
-		"#{total_duration_this_day_in_hours}h#{display_total_duration_this_day_minutes}m#{display_total_duration_this_day_seconds}s"
-	end
-
-	def total_duration_one_day_before
-		total_duration_one_day_before = 0
-		attendances.sortie.one_day_before.each do |sortie|
-			total_duration_one_day_before += duration(sortie)
+	def duration_entree_in_hours(attendance)
+		if next_sortie(attendance)
+		(duration_entree_in_minutes(attendance) / 60).floor
 		end
-		total_duration_one_day_before		
 	end
 
-	def total_duration_one_day_before_in_minutes
-		(total_duration_one_day_before / 60).floor
-	end
-
-	def total_duration_one_day_before_in_hours
-		(total_duration_one_day_before_in_minutes / 60).floor
-	end
-
-	def display_total_duration_one_day_before_minutes
-		total_duration_one_day_before_in_minutes - total_duration_one_day_before_in_hours*60
-	end
-
-	def display_total_duration_one_day_before_seconds
-		total_duration_one_day_before - total_duration_one_day_before_in_minutes*60
-	end
-
-	def display_total_duration_one_day_before
-		"#{total_duration_one_day_before_in_hours}h#{display_total_duration_one_day_before_minutes}m#{display_total_duration_one_day_before_seconds}s"
-	end
-
-	def total_duration_two_days_before
-		total_duration_two_days_before = 0
-		attendances.sortie.two_days_before.each do |sortie|
-			total_duration_two_days_before += duration(sortie)
+	def display_duration_entree_minutes(attendance)
+		if next_sortie(attendance)
+		duration_entree_in_minutes(attendance) - duration_entree_in_hours(attendance)*60
 		end
-		total_duration_two_days_before		
 	end
 
-	def total_duration_two_days_before_in_minutes
-		(total_duration_two_days_before / 60).floor
-	end
-
-	def total_duration_two_days_before_in_hours
-		(total_duration_two_days_before_in_minutes / 60).floor
-	end
-
-	def display_total_duration_two_days_before_minutes
-		total_duration_two_days_before_in_minutes - total_duration_two_days_before_in_hours*60
-	end
-
-	def display_total_duration_two_days_before_seconds
-		total_duration_two_days_before - total_duration_two_days_before_in_minutes*60
-	end
-
-	def display_total_duration_two_days_before
-		"#{total_duration_two_days_before_in_hours}h#{display_total_duration_two_days_before_minutes}m#{display_total_duration_two_days_before_seconds}s"
-	end
-
-	def total_duration_three_days_before
-		total_duration_three_days_before = 0
-		attendances.sortie.three_days_before.each do |sortie|
-			total_duration_three_days_before += duration(sortie)
+	def display_duration_entree_seconds(attendance)
+		if next_sortie(attendance)
+		duration_entree(attendance) - duration_entree_in_minutes(attendance)*60
 		end
-		total_duration_three_days_before		
 	end
 
-	def total_duration_three_days_before_in_minutes
-		(total_duration_three_days_before / 60).floor
-	end
-
-	def total_duration_three_days_before_in_hours
-		(total_duration_three_days_before_in_minutes / 60).floor
-	end
-
-	def display_total_duration_three_days_before_minutes
-		total_duration_three_days_before_in_minutes - total_duration_three_days_before_in_hours*60
-	end
-
-	def display_total_duration_three_days_before_seconds
-		total_duration_three_days_before - total_duration_three_days_before_in_minutes*60
-	end
-
-	def display_total_duration_three_days_before
-		"#{total_duration_three_days_before_in_hours}h#{display_total_duration_three_days_before_minutes}m#{display_total_duration_three_days_before_seconds}s"
-	end
-
-	def total_duration_four_days_before
-		total_duration_four_days_before = 0
-		attendances.sortie.four_days_before.each do |sortie|
-			total_duration_four_days_before += duration(sortie)
+	def display_duration_entree(attendance)
+		if next_sortie(attendance)
+		"#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}s"
 		end
-		total_duration_four_days_before		
 	end
 
-	def total_duration_four_days_before_in_minutes
-		(total_duration_four_days_before / 60).floor
-	end
+	def total_duration_entree
+		# total duration of attendance for an employee based on the entrees
 
-	def total_duration_four_days_before_in_hours
-		(total_duration_four_days_before_in_minutes / 60).floor
-	end
+	    total_duration_entree = 0
+	    attendances.entree.each do |entree|
+	    total_duration_entree += duration_entree(entree)
+	    end
+	    total_duration_entree
+  	end
 
-	def display_total_duration_four_days_before_minutes
-		total_duration_four_days_before_in_minutes - total_duration_four_days_before_in_hours*60
-	end
-
-	def display_total_duration_four_days_before_seconds
-		total_duration_four_days_before - total_duration_four_days_before_in_minutes*60
-	end
-
-	def display_total_duration_four_days_before
-		"#{total_duration_four_days_before_in_hours}h#{display_total_duration_four_days_before_minutes}m#{display_total_duration_four_days_before_seconds}s"
-	end
-
-	def total_duration_five_days_before
-		total_duration_five_days_before = 0
-		attendances.sortie.five_days_before.each do |sortie|
-			total_duration_five_days_before += duration(sortie)
+  	def duration_entree_this_day 
+  		duration_entree_this_day = 0
+		attendances.entree.this_day.each do |entree|
+			if next_sortie(entree)
+			duration_entree_this_day += duration_entree(entree)
+			end
 		end
-		total_duration_five_days_before		
+		duration_entree_this_day	
+  	end
+
+	def duration_entree_this_day_in_minutes
+		(duration_entree_this_day / 60).floor
 	end
 
-	def total_duration_five_days_before_in_minutes
-		(total_duration_five_days_before / 60).floor
+	def duration_entree_this_day_in_hours
+		(duration_entree_this_day_in_minutes / 60).floor
 	end
 
-	def total_duration_five_days_before_in_hours
-		(total_duration_five_days_before_in_minutes / 60).floor
+	def display_duration_entree_this_day_minutes		
+		duration_entree_this_day_in_minutes - duration_entree_this_day_in_hours*60		
 	end
 
-	def display_total_duration_five_days_before_minutes
-		total_duration_five_days_before_in_minutes - total_duration_five_days_before_in_hours*60
+	def display_duration_entree_this_day_seconds
+		duration_entree_this_day - duration_entree_this_day_in_minutes*60
 	end
 
-	def display_total_duration_five_days_before_seconds
-		total_duration_five_days_before - total_duration_five_days_before_in_minutes*60
+	def display_duration_entree_this_day # OK
+		"#{duration_entree_this_day_in_hours}h#{display_duration_entree_this_day_minutes}m#{display_duration_entree_this_day_seconds}s"
 	end
 
-	def display_total_duration_five_days_before
-		"#{total_duration_five_days_before_in_hours}h#{display_total_duration_five_days_before_minutes}m#{display_total_duration_five_days_before_seconds}s"
-	end
-
-	def total_duration_six_days_before
-		total_duration_six_days_before = 0
-		attendances.sortie.six_days_before.each do |sortie|
-			total_duration_six_days_before += duration(sortie)
+  	def duration_entree_one_day_before 
+  		duration_entree_one_day_before = 0
+		attendances.entree.one_day_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_one_day_before += duration_entree(entree)
+			end
 		end
-		total_duration_six_days_before		
+		duration_entree_one_day_before	
+  	end
+
+	def duration_entree_one_day_before_in_minutes
+		(duration_entree_one_day_before / 60).floor
 	end
 
-	def total_duration_six_days_before_in_minutes
-		(total_duration_six_days_before / 60).floor
+	def duration_entree_one_day_before_in_hours
+		(duration_entree_one_day_before_in_minutes / 60).floor
 	end
 
-	def total_duration_six_days_before_in_hours
-		(total_duration_six_days_before_in_minutes / 60).floor
+	def display_duration_entree_one_day_before_minutes		
+		duration_entree_one_day_before_in_minutes - duration_entree_one_day_before_in_hours*60		
 	end
 
-	def display_total_duration_six_days_before_minutes
-		total_duration_six_days_before_in_minutes - total_duration_six_days_before_in_hours*60
+	def display_duration_entree_one_day_before_seconds
+		duration_entree_one_day_before - duration_entree_one_day_before_in_minutes*60
 	end
 
-	def display_total_duration_six_days_before_seconds
-		total_duration_six_days_before - total_duration_six_days_before_in_minutes*60
+	def display_duration_entree_one_day_before # OK
+		"#{duration_entree_one_day_before_in_hours}h#{display_duration_entree_one_day_before_minutes}m#{display_duration_entree_one_day_before_seconds}s"
 	end
 
-	def display_total_duration_six_days_before
-		"#{total_duration_six_days_before_in_hours}h#{display_total_duration_six_days_before_minutes}m#{display_total_duration_six_days_before_seconds}s"
-	end
-
-	def total_duration_seven_days_before
-		total_duration_seven_days_before = 0
-		attendances.sortie.seven_days_before.each do |sortie|
-			total_duration_seven_days_before += duration(sortie)
+  	def duration_entree_two_days_before 
+  		duration_entree_two_days_before = 0
+		attendances.entree.two_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_two_days_before += duration_entree(entree)
+			end
 		end
-		total_duration_seven_days_before		
+		duration_entree_two_days_before	
+  	end
+
+	def duration_entree_two_days_before_in_minutes
+		(duration_entree_two_days_before / 60).floor
 	end
 
-	def total_duration_seven_days_before_in_minutes
-		(total_duration_seven_days_before / 60).floor
+	def duration_entree_two_days_before_in_hours
+		(duration_entree_two_days_before_in_minutes / 60).floor
 	end
 
-	def total_duration_seven_days_before_in_hours
-		(total_duration_seven_days_before_in_minutes / 60).floor
+	def display_duration_entree_two_days_before_minutes		
+		duration_entree_two_days_before_in_minutes - duration_entree_two_days_before_in_hours*60		
 	end
 
-	def display_total_duration_seven_days_before_minutes
-		total_duration_seven_days_before_in_minutes - total_duration_seven_days_before_in_hours*60
+	def display_duration_entree_two_days_before_seconds
+		duration_entree_two_days_before - duration_entree_two_days_before_in_minutes*60
 	end
 
-	def display_total_duration_seven_days_before_seconds
-		total_duration_seven_days_before - total_duration_seven_days_before_in_minutes*60
+	def display_duration_entree_two_days_before # OK
+		"#{duration_entree_two_days_before_in_hours}h#{display_duration_entree_two_days_before_minutes}m#{display_duration_entree_two_days_before_seconds}s"
 	end
 
-	def display_total_duration_seven_days_before
-		"#{total_duration_seven_days_before_in_hours}h#{display_total_duration_seven_days_before_minutes}m#{display_total_duration_seven_days_before_seconds}s"
-	end
-
-	def total_duration_eight_days_before
-		total_duration_eight_days_before = 0
-		attendances.sortie.eight_days_before.each do |sortie|
-			total_duration_eight_days_before += duration(sortie)
+  	def duration_entree_three_days_before 
+  		duration_entree_three_days_before = 0
+		attendances.entree.three_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_three_days_before += duration_entree(entree)
+			end
 		end
-		total_duration_eight_days_before		
+		duration_entree_three_days_before	
+  	end
+
+	def duration_entree_three_days_before_in_minutes
+		(duration_entree_three_days_before / 60).floor
 	end
 
-	def total_duration_eight_days_before_in_minutes
-		(total_duration_eight_days_before / 60).floor
+	def duration_entree_three_days_before_in_hours
+		(duration_entree_three_days_before_in_minutes / 60).floor
 	end
 
-	def total_duration_eight_days_before_in_hours
-		(total_duration_eight_days_before_in_minutes / 60).floor
+	def display_duration_entree_three_days_before_minutes		
+		duration_entree_three_days_before_in_minutes - duration_entree_three_days_before_in_hours*60		
 	end
 
-	def display_total_duration_eight_days_before_minutes
-		total_duration_eight_days_before_in_minutes - total_duration_eight_days_before_in_hours*60
+	def display_duration_entree_three_days_before_seconds
+		duration_entree_three_days_before - duration_entree_three_days_before_in_minutes*60
 	end
 
-	def display_total_duration_eight_days_before_seconds
-		total_duration_eight_days_before - total_duration_eight_days_before_in_minutes*60
+	def display_duration_entree_three_days_before # OK
+		"#{duration_entree_three_days_before_in_hours}h#{display_duration_entree_three_days_before_minutes}m#{display_duration_entree_three_days_before_seconds}s"
 	end
 
-	def display_total_duration_eight_days_before
-		"#{total_duration_eight_days_before_in_hours}h#{display_total_duration_eight_days_before_minutes}m#{display_total_duration_eight_days_before_seconds}s"
-	end
-
-	def total_duration_nine_days_before
-		total_duration_nine_days_before = 0
-		attendances.sortie.nine_days_before.each do |sortie|
-			total_duration_nine_days_before += duration(sortie)
+  	def duration_entree_four_days_before 
+  		duration_entree_four_days_before = 0
+		attendances.entree.four_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_four_days_before += duration_entree(entree)
+			end
 		end
-		total_duration_nine_days_before		
+		duration_entree_four_days_before	
+  	end
+
+	def duration_entree_four_days_before_in_minutes
+		(duration_entree_four_days_before / 60).floor
 	end
 
-	def total_duration_nine_days_before_in_minutes
-		(total_duration_nine_days_before / 60).floor
+	def duration_entree_four_days_before_in_hours
+		(duration_entree_four_days_before_in_minutes / 60).floor
 	end
 
-	def total_duration_nine_days_before_in_hours
-		(total_duration_nine_days_before_in_minutes / 60).floor
+	def display_duration_entree_four_days_before_minutes		
+		duration_entree_four_days_before_in_minutes - duration_entree_four_days_before_in_hours*60		
 	end
 
-	def display_total_duration_nine_days_before_minutes
-		total_duration_nine_days_before_in_minutes - total_duration_nine_days_before_in_hours*60
+	def display_duration_entree_four_days_before_seconds
+		duration_entree_four_days_before - duration_entree_four_days_before_in_minutes*60
 	end
 
-	def display_total_duration_nine_days_before_seconds
-		total_duration_nine_days_before - total_duration_nine_days_before_in_minutes*60
+	def display_duration_entree_four_days_before # OK
+		"#{duration_entree_four_days_before_in_hours}h#{display_duration_entree_four_days_before_minutes}m#{display_duration_entree_four_days_before_seconds}s"
 	end
 
-	def display_total_duration_nine_days_before
-		"#{total_duration_nine_days_before_in_hours}h#{display_total_duration_nine_days_before_minutes}m#{display_total_duration_nine_days_before_seconds}s"
-	end
-
-	def total_duration_ten_days_before
-		total_duration_ten_days_before = 0
-		attendances.sortie.ten_days_before.each do |sortie|
-			total_duration_ten_days_before += duration(sortie)
+  	def duration_entree_five_days_before 
+  		duration_entree_five_days_before = 0
+		attendances.entree.five_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_five_days_before += duration_entree(entree)
+			end
 		end
-		total_duration_ten_days_before		
+		duration_entree_five_days_before	
+  	end
+
+	def duration_entree_five_days_before_in_minutes
+		(duration_entree_five_days_before / 60).floor
 	end
 
-	def total_duration_ten_days_before_in_minutes
-		(total_duration_ten_days_before / 60).floor
+	def duration_entree_five_days_before_in_hours
+		(duration_entree_five_days_before_in_minutes / 60).floor
 	end
 
-	def total_duration_ten_days_before_in_hours
-		(total_duration_ten_days_before_in_minutes / 60).floor
+	def display_duration_entree_five_days_before_minutes		
+		duration_entree_five_days_before_in_minutes - duration_entree_five_days_before_in_hours*60		
 	end
 
-	def display_total_duration_ten_days_before_minutes
-		total_duration_ten_days_before_in_minutes - total_duration_ten_days_before_in_hours*60
+	def display_duration_entree_five_days_before_seconds
+		duration_entree_five_days_before - duration_entree_five_days_before_in_minutes*60
 	end
 
-	def display_total_duration_ten_days_before_seconds
-		total_duration_ten_days_before - total_duration_ten_days_before_in_minutes*60
+	def display_duration_entree_five_days_before # OK
+		"#{duration_entree_five_days_before_in_hours}h#{display_duration_entree_five_days_before_minutes}m#{display_duration_entree_five_days_before_seconds}s"
 	end
 
-	def display_total_duration_ten_days_before
-		"#{total_duration_ten_days_before_in_hours}h#{display_total_duration_ten_days_before_minutes}m#{display_total_duration_ten_days_before_seconds}s"
-	end
-
-	def total_duration_eleven_days_before
-		total_duration_eleven_days_before = 0
-		attendances.sortie.eleven_days_before.each do |sortie|
-			total_duration_eleven_days_before += duration(sortie)
+  	def duration_entree_six_days_before 
+  		duration_entree_six_days_before = 0
+		attendances.entree.six_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_six_days_before += duration_entree(entree)
+			end
 		end
-		total_duration_eleven_days_before		
+		duration_entree_six_days_before	
+  	end
+
+	def duration_entree_six_days_before_in_minutes
+		(duration_entree_six_days_before / 60).floor
 	end
 
-	def total_duration_eleven_days_before_in_minutes
-		(total_duration_eleven_days_before / 60).floor
+	def duration_entree_six_days_before_in_hours
+		(duration_entree_six_days_before_in_minutes / 60).floor
 	end
 
-	def total_duration_eleven_days_before_in_hours
-		(total_duration_eleven_days_before_in_minutes / 60).floor
+	def display_duration_entree_six_days_before_minutes		
+		duration_entree_six_days_before_in_minutes - duration_entree_six_days_before_in_hours*60		
 	end
 
-	def display_total_duration_eleven_days_before_minutes
-		total_duration_eleven_days_before_in_minutes - total_duration_eleven_days_before_in_hours*60
+	def display_duration_entree_six_days_before_seconds
+		duration_entree_six_days_before - duration_entree_six_days_before_in_minutes*60
 	end
 
-	def display_total_duration_eleven_days_before_seconds
-		total_duration_eleven_days_before - total_duration_eleven_days_before_in_minutes*60
+	def display_duration_entree_six_days_before # OK
+		"#{duration_entree_six_days_before_in_hours}h#{display_duration_entree_six_days_before_minutes}m#{display_duration_entree_six_days_before_seconds}s"
 	end
 
-	def display_total_duration_eleven_days_before
-		"#{total_duration_eleven_days_before_in_hours}h#{display_total_duration_eleven_days_before_minutes}m#{display_total_duration_eleven_days_before_seconds}s"
-	end
-
-	def total_duration_twelve_days_before
-		total_duration_twelve_days_before = 0
-		attendances.sortie.twelve_days_before.each do |sortie|
-			total_duration_twelve_days_before += duration(sortie)
+  	def duration_entree_seven_days_before 
+  		duration_entree_seven_days_before = 0
+		attendances.entree.seven_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_seven_days_before += duration_entree(entree)
+			end
 		end
-		total_duration_twelve_days_before		
+		duration_entree_seven_days_before	
+  	end
+
+	def duration_entree_seven_days_before_in_minutes
+		(duration_entree_seven_days_before / 60).floor
 	end
 
-	def total_duration_twelve_days_before_in_minutes
-		(total_duration_twelve_days_before / 60).floor
+	def duration_entree_seven_days_before_in_hours
+		(duration_entree_seven_days_before_in_minutes / 60).floor
 	end
 
-	def total_duration_twelve_days_before_in_hours
-		(total_duration_twelve_days_before_in_minutes / 60).floor
+	def display_duration_entree_seven_days_before_minutes		
+		duration_entree_seven_days_before_in_minutes - duration_entree_seven_days_before_in_hours*60		
 	end
 
-	def display_total_duration_twelve_days_before_minutes
-		total_duration_twelve_days_before_in_minutes - total_duration_twelve_days_before_in_hours*60
+	def display_duration_entree_seven_days_before_seconds
+		duration_entree_seven_days_before - duration_entree_seven_days_before_in_minutes*60
 	end
 
-	def display_total_duration_twelve_days_before_seconds
-		total_duration_twelve_days_before - total_duration_twelve_days_before_in_minutes*60
+	def display_duration_entree_seven_days_before # OK
+		"#{duration_entree_seven_days_before_in_hours}h#{display_duration_entree_seven_days_before_minutes}m#{display_duration_entree_seven_days_before_seconds}s"
 	end
 
-	def display_total_duration_twelve_days_before
-		"#{total_duration_twelve_days_before_in_hours}h#{display_total_duration_twelve_days_before_minutes}m#{display_total_duration_twelve_days_before_seconds}s"
-	end
-
-	def total_duration_thirteen_days_before
-		total_duration_thirteen_days_before = 0
-		attendances.sortie.thirteen_days_before.each do |sortie|
-			total_duration_thirteen_days_before += duration(sortie)
+  	def duration_entree_eight_days_before 
+  		duration_entree_eight_days_before = 0
+		attendances.entree.eight_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_eight_days_before += duration_entree(entree)
+			end
 		end
-		total_duration_thirteen_days_before		
+		duration_entree_eight_days_before	
+  	end
+
+	def duration_entree_eight_days_before_in_minutes
+		(duration_entree_eight_days_before / 60).floor
 	end
 
-	def total_duration_thirteen_days_before_in_minutes
-		(total_duration_thirteen_days_before / 60).floor
+	def duration_entree_eight_days_before_in_hours
+		(duration_entree_eight_days_before_in_minutes / 60).floor
 	end
 
-	def total_duration_thirteen_days_before_in_hours
-		(total_duration_thirteen_days_before_in_minutes / 60).floor
+	def display_duration_entree_eight_days_before_minutes		
+		duration_entree_eight_days_before_in_minutes - duration_entree_eight_days_before_in_hours*60		
 	end
 
-	def display_total_duration_thirteen_days_before_minutes
-		total_duration_thirteen_days_before_in_minutes - total_duration_thirteen_days_before_in_hours*60
+	def display_duration_entree_eight_days_before_seconds
+		duration_entree_eight_days_before - duration_entree_eight_days_before_in_minutes*60
 	end
 
-	def display_total_duration_thirteen_days_before_seconds
-		total_duration_thirteen_days_before - total_duration_thirteen_days_before_in_minutes*60
+	def display_duration_entree_eight_days_before # OK
+		"#{duration_entree_eight_days_before_in_hours}h#{display_duration_entree_eight_days_before_minutes}m#{display_duration_entree_eight_days_before_seconds}s"
 	end
 
-	def display_total_duration_thirteen_days_before
-		"#{total_duration_thirteen_days_before_in_hours}h#{display_total_duration_thirteen_days_before_minutes}m#{display_total_duration_thirteen_days_before_seconds}s"
-	end
-
-	def total_duration_fourteen_days_before
-		total_duration_fourteen_days_before = 0
-		attendances.sortie.fourteen_days_before.each do |sortie|
-			total_duration_fourteen_days_before += duration(sortie)
+  	def duration_entree_nine_days_before 
+  		duration_entree_nine_days_before = 0
+		attendances.entree.nine_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_nine_days_before += duration_entree(entree)
+			end
 		end
-		total_duration_fourteen_days_before		
+		duration_entree_nine_days_before	
+  	end
+
+	def duration_entree_nine_days_before_in_minutes
+		(duration_entree_nine_days_before / 60).floor
 	end
 
-	def total_duration_fourteen_days_before_in_minutes
-		(total_duration_fourteen_days_before / 60).floor
+	def duration_entree_nine_days_before_in_hours
+		(duration_entree_nine_days_before_in_minutes / 60).floor
 	end
 
-	def total_duration_fourteen_days_before_in_hours
-		(total_duration_fourteen_days_before_in_minutes / 60).floor
+	def display_duration_entree_nine_days_before_minutes		
+		duration_entree_nine_days_before_in_minutes - duration_entree_nine_days_before_in_hours*60		
 	end
 
-	def display_total_duration_fourteen_days_before_minutes
-		total_duration_fourteen_days_before_in_minutes - total_duration_fourteen_days_before_in_hours*60
+	def display_duration_entree_nine_days_before_seconds
+		duration_entree_nine_days_before - duration_entree_nine_days_before_in_minutes*60
 	end
 
-	def display_total_duration_fourteen_days_before_seconds
-		total_duration_fourteen_days_before - total_duration_fourteen_days_before_in_minutes*60
+	def display_duration_entree_nine_days_before # OK
+		"#{duration_entree_nine_days_before_in_hours}h#{display_duration_entree_nine_days_before_minutes}m#{display_duration_entree_nine_days_before_seconds}s"
 	end
 
-	def display_total_duration_fourteen_days_before
-		"#{total_duration_fourteen_days_before_in_hours}h#{display_total_duration_fourteen_days_before_minutes}m#{display_total_duration_fourteen_days_before_seconds}s"
+  	def duration_entree_ten_days_before 
+  		duration_entree_ten_days_before = 0
+		attendances.entree.ten_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_ten_days_before += duration_entree(entree)
+			end
+		end
+		duration_entree_ten_days_before	
+  	end
+
+	def duration_entree_ten_days_before_in_minutes
+		(duration_entree_ten_days_before / 60).floor
 	end
+
+	def duration_entree_ten_days_before_in_hours
+		(duration_entree_ten_days_before_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_ten_days_before_minutes		
+		duration_entree_ten_days_before_in_minutes - duration_entree_ten_days_before_in_hours*60		
+	end
+
+	def display_duration_entree_ten_days_before_seconds
+		duration_entree_ten_days_before - duration_entree_ten_days_before_in_minutes*60
+	end
+
+	def display_duration_entree_ten_days_before # OK
+		"#{duration_entree_ten_days_before_in_hours}h#{display_duration_entree_ten_days_before_minutes}m#{display_duration_entree_ten_days_before_seconds}s"
+	end
+
+  	def duration_entree_eleven_days_before 
+  		duration_entree_eleven_days_before = 0
+		attendances.entree.eleven_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_eleven_days_before += duration_entree(entree)
+			end
+		end
+		duration_entree_eleven_days_before	
+  	end
+
+	def duration_entree_eleven_days_before_in_minutes
+		(duration_entree_eleven_days_before / 60).floor
+	end
+
+	def duration_entree_eleven_days_before_in_hours
+		(duration_entree_eleven_days_before_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_eleven_days_before_minutes		
+		duration_entree_eleven_days_before_in_minutes - duration_entree_eleven_days_before_in_hours*60		
+	end
+
+	def display_duration_entree_eleven_days_before_seconds
+		duration_entree_eleven_days_before - duration_entree_eleven_days_before_in_minutes*60
+	end
+
+	def display_duration_entree_eleven_days_before # OK
+		"#{duration_entree_eleven_days_before_in_hours}h#{display_duration_entree_eleven_days_before_minutes}m#{display_duration_entree_eleven_days_before_seconds}s"
+	end
+
+  	def duration_entree_twelve_days_before 
+  		duration_entree_twelve_days_before = 0
+		attendances.entree.twelve_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_twelve_days_before += duration_entree(entree)
+			end
+		end
+		duration_entree_twelve_days_before	
+  	end
+
+	def duration_entree_twelve_days_before_in_minutes
+		(duration_entree_twelve_days_before / 60).floor
+	end
+
+	def duration_entree_twelve_days_before_in_hours
+		(duration_entree_twelve_days_before_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_twelve_days_before_minutes		
+		duration_entree_twelve_days_before_in_minutes - duration_entree_twelve_days_before_in_hours*60		
+	end
+
+	def display_duration_entree_twelve_days_before_seconds
+		duration_entree_twelve_days_before - duration_entree_twelve_days_before_in_minutes*60
+	end
+
+	def display_duration_entree_twelve_days_before # OK
+		"#{duration_entree_twelve_days_before_in_hours}h#{display_duration_entree_twelve_days_before_minutes}m#{display_duration_entree_twelve_days_before_seconds}s"
+	end
+
+  	def duration_entree_thirteen_days_before 
+  		duration_entree_thirteen_days_before = 0
+		attendances.entree.thirteen_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_thirteen_days_before += duration_entree(entree)
+			end
+		end
+		duration_entree_thirteen_days_before	
+  	end
+
+	def duration_entree_thirteen_days_before_in_minutes
+		(duration_entree_thirteen_days_before / 60).floor
+	end
+
+	def duration_entree_thirteen_days_before_in_hours
+		(duration_entree_thirteen_days_before_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_thirteen_days_before_minutes		
+		duration_entree_thirteen_days_before_in_minutes - duration_entree_thirteen_days_before_in_hours*60		
+	end
+
+	def display_duration_entree_thirteen_days_before_seconds
+		duration_entree_thirteen_days_before - duration_entree_thirteen_days_before_in_minutes*60
+	end
+
+	def display_duration_entree_thirteen_days_before # OK
+		"#{duration_entree_thirteen_days_before_in_hours}h#{display_duration_entree_thirteen_days_before_minutes}m#{display_duration_entree_thirteen_days_before_seconds}s"
+	end
+
+  	def duration_entree_fourteen_days_before 
+  		duration_entree_fourteen_days_before = 0
+		attendances.entree.fourteen_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_fourteen_days_before += duration_entree(entree)
+			end
+		end
+		duration_entree_fourteen_days_before	
+  	end
+
+	def duration_entree_fourteen_days_before_in_minutes
+		(duration_entree_fourteen_days_before / 60).floor
+	end
+
+	def duration_entree_fourteen_days_before_in_hours
+		(duration_entree_fourteen_days_before_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_fourteen_days_before_minutes		
+		duration_entree_fourteen_days_before_in_minutes - duration_entree_fourteen_days_before_in_hours*60		
+	end
+
+	def display_duration_entree_fourteen_days_before_seconds
+		duration_entree_fourteen_days_before - duration_entree_fourteen_days_before_in_minutes*60
+	end
+
+	def display_duration_entree_fourteen_days_before # OK
+		"#{duration_entree_fourteen_days_before_in_hours}h#{display_duration_entree_fourteen_days_before_minutes}m#{display_duration_entree_fourteen_days_before_seconds}s"
+	end
+
+  	def duration_entree_fifteen_days_before 
+  		duration_entree_fifteen_days_before = 0
+		attendances.entree.fifteen_days_before.each do |entree|
+			if next_sortie(entree)
+			duration_entree_fifteen_days_before += duration_entree(entree)
+			end
+		end
+		duration_entree_fifteen_days_before	
+  	end
+
+	def duration_entree_fifteen_days_before_in_minutes
+		(duration_entree_fifteen_days_before / 60).floor
+	end
+
+	def duration_entree_fifteen_days_before_in_hours
+		(duration_entree_fifteen_days_before_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_fifteen_days_before_minutes		
+		duration_entree_fifteen_days_before_in_minutes - duration_entree_fifteen_days_before_in_hours*60		
+	end
+
+	def display_duration_entree_fifteen_days_before_seconds
+		duration_entree_fifteen_days_before - duration_entree_fifteen_days_before_in_minutes*60
+	end
+
+	def display_duration_entree_fifteen_days_before # OK
+		"#{duration_entree_fifteen_days_before_in_hours}h#{display_duration_entree_fifteen_days_before_minutes}m#{display_duration_entree_fifteen_days_before_seconds}s"
+	end
+
 
 end

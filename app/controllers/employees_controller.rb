@@ -14,7 +14,7 @@ class EmployeesController < ApplicationController
     @employee = Employee.find(params[:id])
     @attendance = Attendance.new
     @attendances = @employee.attendances
-    @entrees = @employee.entrees.order('created_at ASC')
+    @entrees = @employee.entrees
   end
 
   # GET /employees/new
