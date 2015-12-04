@@ -1,56 +1,49 @@
-
-
 <% if user_signed_in? %>
-
-
-
-
-
-
-
-
 
   <h1>Travailleurs enregistrés</h1>
 
   <%= link_to 'Ajouter un travailleur', new_employee_path, class: "btn btn-default" %>
-<div class="table-responsive">
-  
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Nom et prénom</th>
-          <th>Statut</th>
-          <th>Content</th>
-          <th colspan="4"></th>
-        </tr>
-      </thead>
 
-      <tbody>
-        <% @employees.each do |employee| %>
+    <div class="table-responsive">
+      
+      <table class="table table-hover">
+        <thead>
           <tr>
-            <td><%= employee.id %></td>
-            
-            <td><%= link_to employee.full_name, employee_path(employee), class: "btn btn-xs btn-link" %>
-              <%= link_to edit_employee_path(employee) do %>
-              <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
-              <% end %></td>
-            <td><%= employee.status %></td>
-            <td>
-               <% if employee.attendances.last %>
-              <%= employee.attendances.last.content_display %>
-              <% else %>
-              Absent(e)
-              <% end %>
-            </td>
-                        
-            <!-- <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+            <th>Id</th>
+            <th>Nom et prénom</th>
+            <th>Statut</th>
+            <th>Content</th>
+            <th colspan="4"></th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
 
-</div>
+        <tbody>
+          <% @employees.each do |employee| %>
+            <tr>
+              <td><%= employee.id %></td>
+              
+              <td><%= link_to employee.full_name, employee_path(employee), class: "btn btn-xs btn-link" %>
+                <%= link_to edit_employee_path(employee) do %>
+                <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+                <% end %></td>
+
+              <td><%= employee.status %></td>
+
+              <td>
+                <% if employee.attendances.last %>
+                  <%= employee.attendances.last.content_display %>
+                <% else %>
+                  Absent(e)
+                <% end %>
+              </td>
+                          
+              <!-- <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
 
 <% else %>
 

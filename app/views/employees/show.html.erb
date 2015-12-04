@@ -1,7 +1,5 @@
 <% if user_signed_in? %>
 
-
-
 <h3 class="text-center">Prestation des deux dernières semaines de <%= @employee.name %> <%= @employee.first_name %> (<%= @employee.status %>)</h3><br>
 
 
@@ -197,8 +195,13 @@ LISTE DES PRESENCES
     <%= @employee.status %>
   </p>
 
-  <p>
-    <strong><%= @employee.last_move_content %> le <%= @employee.last_move_day %> <%= @employee.last_move_time.strftime("%d/%m/%Y") %> à <%= @employee.last_move_time.strftime("%H:%M") %></strong>
+  <p><h2 class="text-center">
+    <% if @employee.attendances.last %>
+      <strong><%= @employee.last_move_content %> le <%= @employee.last_move_day %> <%= @employee.last_move_time.strftime("%d/%m/%Y") %> à <%= @employee.last_move_time.strftime("%H:%M") %></strong>
+    <% else %>
+      Première fois? Bienvenue!
+    <% end %>
+    </h2>
    </p>
 
   </div>

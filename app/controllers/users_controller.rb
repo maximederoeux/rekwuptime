@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   def index
     @users = User.order('name ASC')
     @attendances = Attendance.all
+    @employees = Employee.all
   end
 
   def show

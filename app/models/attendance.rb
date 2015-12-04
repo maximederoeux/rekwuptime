@@ -23,7 +23,15 @@ class Attendance < ActiveRecord::Base
 	
 
 
-	scope :one_week_before, lambda {where(:created_at => (7.day.ago.beginning_of_day..Date.current.end_of_day))}
+	scope :last_week, lambda {where(:created_at => (6.days.ago.beginning_of_week.beginning_of_day..6.days.ago.end_of_week.end_of_day))}
+	scope :last_monday, lambda {where(:created_at => (6.days.ago.beginning_of_week.beginning_of_day..6.days.ago.beginning_of_week.end_of_day))}
+	scope :last_tuesday, lambda {where(:created_at => ((6.days.ago.beginning_of_week + 1.day).beginning_of_day..(6.days.ago.beginning_of_week + 1.day).end_of_day))}
+	scope :last_wednesday, lambda {where(:created_at => ((6.days.ago.beginning_of_week + 2.days).beginning_of_day..(6.days.ago.beginning_of_week + 2.days).end_of_day))}
+	scope :last_thursday, lambda {where(:created_at => ((6.days.ago.beginning_of_week + 3.days).beginning_of_day..(6.days.ago.beginning_of_week + 3.days).end_of_day))}
+	scope :last_friday, lambda {where(:created_at => ((6.days.ago.beginning_of_week + 4.days).beginning_of_day..(6.days.ago.beginning_of_week + 4.days).end_of_day))}
+	scope :last_saturday, lambda {where(:created_at => ((6.days.ago.beginning_of_week + 5.days).beginning_of_day..(6.days.ago.beginning_of_week + 5.days).end_of_day))}
+	scope :last_sunday, lambda {where(:created_at => ((6.days.ago.beginning_of_week + 6.days).beginning_of_day..(6.days.ago.beginning_of_week + 6.days).end_of_day))}
+
 
 
 
@@ -61,6 +69,7 @@ end
 	def daily_sort
 		self.created_at.strftime('%d/%m/%Y')
 	end
+
 
 
 end

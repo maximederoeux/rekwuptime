@@ -8,5 +8,10 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
 
+def interim
+	employees.where(:status == 'Interim')
+	
+end
+
 
 end

@@ -2,92 +2,125 @@
 
 
 
-  <%= Date.today.strftime("%A %d/%m/%Y") %>
 
-    <% @employees.each do |employee| %>
-
-      <%= employee.name %>
-      <%= employee.first_name %>
-
-      <% employee.sorties_today.each do |sortie| %>
-
-        <%= employee.entrees.where("created_at < ?", sortie.created_at).last.created_at.strftime("%H:%M") %>
-
-        <%= sortie.created_at.strftime("%H:%M") %>
-
-        <%= (sortie.created_at - employee.entrees.where("created_at < ?", sortie.created_at).last.created_at)/3600 %>
-
-
-      <% end %>
-          
-    <% end %>
-<br>
-
-
-
-  <%= Date.current.yesterday.strftime("%A %d/%m/%Y") %>
-    <% @employees.each do |employee| %>
-      <%= employee.name %>
-      <%= employee.first_name %><br>
-        <% employee.attendances.where(:content => "sortie",:created_at => (1.day.ago.beginning_of_day..1.day.ago.end_of_day)).each do |attendance| %>
-            
-            <%= employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
-
-            <%= attendance.created_at.strftime("%H:%M") %>
-
-            <%= (attendance.created_at - employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at)/3600 %><br>
-
-          <% end %>
-
-    <% end %>
-<br>
-  <%= 2.days.ago.strftime("%A %d/%m/%Y") %>
-    <% @employees.each do |employee| %>
-      <%= employee.name %>
-      <%= employee.first_name %><br>
-        <% employee.attendances.where(:content => "sortie",:created_at => (2.days.ago.beginning_of_day..2.days.ago.end_of_day)).each do |attendance| %>
-            
-            <%= employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at.strftime("%H:%M") %>
-
-            <%= attendance.created_at.strftime("%H:%M") %>
-
-            <%= (attendance.created_at - employee.attendances.where("created_at < ?", attendance.created_at).where(:content => "entree").last.created_at)/3600 %><br>
-
-          <% end %>
-
-    <% end %>
-
-<% else %>
-
-<div class="container">
-
-  <h1 class="text-center">
-  <%= Time.now.strftime("%A %d/%m/%Y") %><br>
-  <%= Time.now.strftime("%H:%M") %>
-  </h1>
-
+<div class="container-fluid">
   <div class="row">
-    
-      <% @employees.each do |employee| %>
+    <div class="col-md-6 col-xs-6">
 
-        <div class="col-xs-6 col-md-4">
+      <h4 class="text-center"><strong>Intérimaires</strong></h4>
 
-            <% unless employee.attendances.last && Time.now - employee.attendances.last.created_at < 1.minute %>
-              <%= link_to employee.full_name, employee_path(employee), class: "btn btn-lg btn-default btn-block" %>
-            <% else %>
-              
-              <button type="button" class="btn btn-default btn-lg btn-block" disabled="disabled">
-                <%= employee.full_name %>
-              </button>
-            <% end %>
-          
+      <h5>Rapport de la semaine <%= 6.days.ago.beginning_of_week.strftime("%W") %><br><br>
+        Du lundi <%= 6.days.ago.beginning_of_week.strftime("%d/%m/%Y") %> au dimanche <%= (6.days.ago.beginning_of_week + 6.days).strftime("%d/%m/%Y") %>
+      </h5>
 
-        </div>
+        <% @employees.where(:status => "Interim").each do |employee| %>
 
-      <% end %>
+          <% if employee.duration_entree_last_week > 0 %>
 
+            <h5><strong><%= employee.full_name %></strong></h5>
+
+
+            <div class="row">
+              <div class="col-md-6 col-xs-6">
+                <ul class="list-group">
+                  <li class="list-group-item">
+
+                  Lundi <%= 6.days.ago.beginning_of_week.strftime("%d/%m/%Y") %><br> 
+                  Mardi <%= (6.days.ago.beginning_of_week + 1.day).strftime("%d/%m/%Y") %><br> 
+                  Mercredi <%= (6.days.ago.beginning_of_week + 2.days).strftime("%d/%m/%Y") %><br> 
+                  Jeudi <%= (6.days.ago.beginning_of_week + 3.days).strftime("%d/%m/%Y") %><br> 
+                  Vendredi <%= (6.days.ago.beginning_of_week + 4.days).strftime("%d/%m/%Y") %><br> 
+                  Samedi <%= (6.days.ago.beginning_of_week + 5.days).strftime("%d/%m/%Y") %><br> 
+                  Dimanche <%= (6.days.ago.beginning_of_week + 6.days).strftime("%d/%m/%Y") %><br> 
+                  <strong>Total de la semaine</strong>
+                  </li>
+                </ul>
+              </div>
+
+                  
+                  
+              <div class="col-md-6 col-xs-6">
+                <ul class="list-group">
+                  <li class="list-group-item text-center">
+                  <%= employee.display_duration_entree_last_monday %><br> 
+                  <%= employee.display_duration_entree_last_tuesday %><br>                  
+                  <%= employee.display_duration_entree_last_wednesday %><br>                  
+                  <%= employee.display_duration_entree_last_thursday %><br>
+                  <%= employee.display_duration_entree_last_friday %><br>                  
+                  <%= employee.display_duration_entree_last_saturday %><br>                  
+                  <%= employee.display_duration_entree_last_sunday %><br>                 
+                  <strong><%= employee.display_duration_entree_last_week %></strong>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          <% else %>
+
+          <% end %>
+         
+        <% end %>
+    </div>
+
+    <div class="col-md-6 col-xs-6">
+      <h4 class="text-center"><strong>Employés</strong></h4>
+
+      <h5>Rapport de la semaine <%= 6.days.ago.beginning_of_week.strftime("%W") %><br><br>
+        Du lundi <%= 6.days.ago.beginning_of_week.strftime("%d/%m/%Y") %> au dimanche <%= (6.days.ago.beginning_of_week + 6.days).strftime("%d/%m/%Y") %>
+      </h5>
+
+        <% @employees.where(:status => "Employe").each do |employee| %>
+
+          <% if employee.duration_entree_last_week > 0 %>
+
+              <h5><strong><%= employee.full_name %></strong></h5>
+
+              <div class="row">
+              <div class="col-md-6 col-xs-6">
+                <ul class="list-group">
+                  <li class="list-group-item">
+
+                  Lundi <%= 6.days.ago.beginning_of_week.strftime("%d/%m/%Y") %><br> 
+                  Mardi <%= (6.days.ago.beginning_of_week + 1.day).strftime("%d/%m/%Y") %><br> 
+                  Mercredi <%= (6.days.ago.beginning_of_week + 2.days).strftime("%d/%m/%Y") %><br> 
+                  Jeudi <%= (6.days.ago.beginning_of_week + 3.days).strftime("%d/%m/%Y") %><br> 
+                  Vendredi <%= (6.days.ago.beginning_of_week + 4.days).strftime("%d/%m/%Y") %><br> 
+                  Samedi <%= (6.days.ago.beginning_of_week + 5.days).strftime("%d/%m/%Y") %><br> 
+                  Dimanche <%= (6.days.ago.beginning_of_week + 6.days).strftime("%d/%m/%Y") %><br> 
+                  <strong>Total de la semaine</strong>
+                  </li>
+                </ul>
+              </div>
+
+                  
+                  
+              <div class="col-md-6 col-xs-6">
+                <ul class="list-group">
+                  <li class="list-group-item text-center">
+                  <%= employee.display_duration_entree_last_monday %><br> 
+                  <%= employee.display_duration_entree_last_tuesday %><br>                  
+                  <%= employee.display_duration_entree_last_wednesday %><br>                  
+                  <%= employee.display_duration_entree_last_thursday %><br>
+                  <%= employee.display_duration_entree_last_friday %><br>                  
+                  <%= employee.display_duration_entree_last_saturday %><br>                  
+                  <%= employee.display_duration_entree_last_sunday %><br>                 
+                  <strong><%= employee.display_duration_entree_last_week %></strong>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          <% else %>
+
+          <% end %>
+
+        <% end %>
+    </div>
   </div>
-
 </div>
-<% end %>
+        <% else %>
+
+        blibli
+
+        <% end %>
 

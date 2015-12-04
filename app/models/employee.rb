@@ -21,32 +21,44 @@ class Employee < ActiveRecord::Base
 	end	
 
 	def last_move_content
-		if self.attendances.last.content == "entree"
-			"Dernière entrée"
-		elsif self.attendances.last.content == "sortie"
-			"Dernière sortie"
+		if self.attendances.last
+			if self.attendances.last.content == "entree"
+				"Dernière entrée"
+			elsif self.attendances.last.content == "sortie"
+				"Dernière sortie"
+			end
+		else
+		"blabla"
 		end
 	end
 
 	def last_move_time
-		self.attendances.last.created_at
+		if self.attendances.last
+			self.attendances.last.created_at
+		else
+		"blabla"
+		end
 	end
 
 	def last_move_day
-		if self.last_move_time.strftime("%u") == '7'
-			"dimanche"
-		elsif self.last_move_time.strftime("%u") == '1'
-			"lundi"
-		elsif self.last_move_time.strftime("%u") == '2'
-			"mardi"
-		elsif self.last_move_time.strftime("%u") == '3'
-			"mercredi"
-		elsif self.last_move_time.strftime("%u") == '4'
-			"jeudi"
-		elsif self.last_move_time.strftime("%u") == '5'
-			"vendredi"
-		elsif self.last_move_time.strftime("%u") == '6'
-			"samedi"
+		if self.attendances.last
+			if self.last_move_time.strftime("%u") == '7'
+				"dimanche"
+			elsif self.last_move_time.strftime("%u") == '1'
+				"lundi"
+			elsif self.last_move_time.strftime("%u") == '2'
+				"mardi"
+			elsif self.last_move_time.strftime("%u") == '3'
+				"mercredi"
+			elsif self.last_move_time.strftime("%u") == '4'
+				"jeudi"
+			elsif self.last_move_time.strftime("%u") == '5'
+				"vendredi"
+			elsif self.last_move_time.strftime("%u") == '6'
+				"samedi"
+			end
+		else
+		"blibli"
 		end
 			
 	end
@@ -240,6 +252,8 @@ class Employee < ActiveRecord::Base
 	    end
 	    total_duration_entree
   	end
+
+# CALCULATION OF DURATION PER DAY FROM TODAY TILL TWO WEEKS AGO
 
   	def duration_entree_this_day 
   		duration_entree_this_day = 0
@@ -721,5 +735,243 @@ class Employee < ActiveRecord::Base
 		"#{duration_entree_fifteen_days_before_in_hours}h#{display_duration_entree_fifteen_days_before_minutes}m#{display_duration_entree_fifteen_days_before_seconds}s"
 	end
 
+  	def duration_entree_last_monday 
+  		duration_entree_last_monday = 0
+		attendances.entree.last_monday.each do |entree|
+			if next_sortie(entree)
+			duration_entree_last_monday += duration_entree(entree)
+			end
+		end
+		duration_entree_last_monday	
+  	end
 
+	def duration_entree_last_monday_in_minutes
+		(duration_entree_last_monday / 60).floor
+	end
+
+	def duration_entree_last_monday_in_hours
+		(duration_entree_last_monday_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_last_monday_minutes		
+		duration_entree_last_monday_in_minutes - duration_entree_last_monday_in_hours*60		
+	end
+
+	def display_duration_entree_last_monday_seconds
+		duration_entree_last_monday - duration_entree_last_monday_in_minutes*60
+	end
+
+	def display_duration_entree_last_monday # OK
+		"#{duration_entree_last_monday_in_hours}h#{display_duration_entree_last_monday_minutes}m#{display_duration_entree_last_monday_seconds}s"
+	end
+
+  	def duration_entree_last_tuesday 
+  		duration_entree_last_tuesday = 0
+		attendances.entree.last_tuesday.each do |entree|
+			if next_sortie(entree)
+			duration_entree_last_tuesday += duration_entree(entree)
+			end
+		end
+		duration_entree_last_tuesday	
+  	end
+
+	def duration_entree_last_tuesday_in_minutes
+		(duration_entree_last_tuesday / 60).floor
+	end
+
+	def duration_entree_last_tuesday_in_hours
+		(duration_entree_last_tuesday_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_last_tuesday_minutes		
+		duration_entree_last_tuesday_in_minutes - duration_entree_last_tuesday_in_hours*60		
+	end
+
+	def display_duration_entree_last_tuesday_seconds
+		duration_entree_last_tuesday - duration_entree_last_tuesday_in_minutes*60
+	end
+
+	def display_duration_entree_last_tuesday # OK
+		"#{duration_entree_last_tuesday_in_hours}h#{display_duration_entree_last_tuesday_minutes}m#{display_duration_entree_last_tuesday_seconds}s"
+	end
+
+  	def duration_entree_last_wednesday 
+  		duration_entree_last_wednesday = 0
+		attendances.entree.last_wednesday.each do |entree|
+			if next_sortie(entree)
+			duration_entree_last_wednesday += duration_entree(entree)
+			end
+		end
+		duration_entree_last_wednesday	
+  	end
+
+	def duration_entree_last_wednesday_in_minutes
+		(duration_entree_last_wednesday / 60).floor
+	end
+
+	def duration_entree_last_wednesday_in_hours
+		(duration_entree_last_wednesday_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_last_wednesday_minutes		
+		duration_entree_last_wednesday_in_minutes - duration_entree_last_wednesday_in_hours*60		
+	end
+
+	def display_duration_entree_last_wednesday_seconds
+		duration_entree_last_wednesday - duration_entree_last_wednesday_in_minutes*60
+	end
+
+	def display_duration_entree_last_wednesday # OK
+		"#{duration_entree_last_wednesday_in_hours}h#{display_duration_entree_last_wednesday_minutes}m#{display_duration_entree_last_wednesday_seconds}s"
+	end
+
+  	def duration_entree_last_thursday 
+  		duration_entree_last_thursday = 0
+		attendances.entree.last_thursday.each do |entree|
+			if next_sortie(entree)
+			duration_entree_last_thursday += duration_entree(entree)
+			end
+		end
+		duration_entree_last_thursday	
+  	end
+
+	def duration_entree_last_thursday_in_minutes
+		(duration_entree_last_thursday / 60).floor
+	end
+
+	def duration_entree_last_thursday_in_hours
+		(duration_entree_last_thursday_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_last_thursday_minutes		
+		duration_entree_last_thursday_in_minutes - duration_entree_last_thursday_in_hours*60		
+	end
+
+	def display_duration_entree_last_thursday_seconds
+		duration_entree_last_thursday - duration_entree_last_thursday_in_minutes*60
+	end
+
+	def display_duration_entree_last_thursday # OK
+		"#{duration_entree_last_thursday_in_hours}h#{display_duration_entree_last_thursday_minutes}m#{display_duration_entree_last_thursday_seconds}s"
+	end
+
+  	def duration_entree_last_friday 
+  		duration_entree_last_friday = 0
+		attendances.entree.last_friday.each do |entree|
+			if next_sortie(entree)
+			duration_entree_last_friday += duration_entree(entree)
+			end
+		end
+		duration_entree_last_friday	
+  	end
+
+	def duration_entree_last_friday_in_minutes
+		(duration_entree_last_friday / 60).floor
+	end
+
+	def duration_entree_last_friday_in_hours
+		(duration_entree_last_friday_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_last_friday_minutes		
+		duration_entree_last_friday_in_minutes - duration_entree_last_friday_in_hours*60		
+	end
+
+	def display_duration_entree_last_friday_seconds
+		duration_entree_last_friday - duration_entree_last_friday_in_minutes*60
+	end
+
+	def display_duration_entree_last_friday # OK
+		"#{duration_entree_last_friday_in_hours}h#{display_duration_entree_last_friday_minutes}m#{display_duration_entree_last_friday_seconds}s"
+	end
+
+  	def duration_entree_last_saturday 
+  		duration_entree_last_saturday = 0
+		attendances.entree.last_saturday.each do |entree|
+			if next_sortie(entree)
+			duration_entree_last_saturday += duration_entree(entree)
+			end
+		end
+		duration_entree_last_saturday	
+  	end
+
+	def duration_entree_last_saturday_in_minutes
+		(duration_entree_last_saturday / 60).floor
+	end
+
+	def duration_entree_last_saturday_in_hours
+		(duration_entree_last_saturday_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_last_saturday_minutes		
+		duration_entree_last_saturday_in_minutes - duration_entree_last_saturday_in_hours*60		
+	end
+
+	def display_duration_entree_last_saturday_seconds
+		duration_entree_last_saturday - duration_entree_last_saturday_in_minutes*60
+	end
+
+	def display_duration_entree_last_saturday # OK
+		"#{duration_entree_last_saturday_in_hours}h#{display_duration_entree_last_saturday_minutes}m#{display_duration_entree_last_saturday_seconds}s"
+	end
+
+  	def duration_entree_last_sunday 
+  		duration_entree_last_sunday = 0
+		attendances.entree.last_sunday.each do |entree|
+			if next_sortie(entree)
+			duration_entree_last_sunday += duration_entree(entree)
+			end
+		end
+		duration_entree_last_sunday	
+  	end
+
+	def duration_entree_last_sunday_in_minutes
+		(duration_entree_last_sunday / 60).floor
+	end
+
+	def duration_entree_last_sunday_in_hours
+		(duration_entree_last_sunday_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_last_sunday_minutes		
+		duration_entree_last_sunday_in_minutes - duration_entree_last_sunday_in_hours*60		
+	end
+
+	def display_duration_entree_last_sunday_seconds
+		duration_entree_last_sunday - duration_entree_last_sunday_in_minutes*60
+	end
+
+	def display_duration_entree_last_sunday # OK
+		"#{duration_entree_last_sunday_in_hours}h#{display_duration_entree_last_sunday_minutes}m#{display_duration_entree_last_sunday_seconds}s"
+	end
+
+  	def duration_entree_last_week 
+  		duration_entree_last_week = 0
+		attendances.entree.last_week.each do |entree|
+			if next_sortie(entree)
+			duration_entree_last_week += duration_entree(entree)
+			end
+		end
+		duration_entree_last_week	
+  	end
+
+	def duration_entree_last_week_in_minutes
+		(duration_entree_last_week / 60).floor
+	end
+
+	def duration_entree_last_week_in_hours
+		(duration_entree_last_week_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_last_week_minutes		
+		duration_entree_last_week_in_minutes - duration_entree_last_week_in_hours*60		
+	end
+
+	def display_duration_entree_last_week_seconds
+		duration_entree_last_week - duration_entree_last_week_in_minutes*60
+	end
+
+	def display_duration_entree_last_week # OK
+		"#{duration_entree_last_week_in_hours}h#{display_duration_entree_last_week_minutes}m#{display_duration_entree_last_week_seconds}s"
+	end	
 end
