@@ -97,7 +97,7 @@ class Employee < ActiveRecord::Base
 		duration(attendance) - (duration_in_minutes(attendance)*60)	
 	end
 
-	def display_duration(attendance)  	def duration_entree_this_day 
+	def duration_entree_this_day 
   		duration_entree_this_day = 0
 		attendances.entree.this_day.each do |entree|
 			if next_sortie(entree)
@@ -127,8 +127,7 @@ class Employee < ActiveRecord::Base
 	def display_duration_entree_this_day # OK
 		"#{duration_entree_this_day_in_hours}h#{display_duration_entree_this_day_minutes}m#{display_duration_entree_this_day_seconds}s"
 	end
-		"#{duration_in_hours(attendance)}h#{display_duration_minutes(attendance)}m#{display_duration_seconds(attendance)}s"
-	end	
+		
 
 # CALCULATION AND DISPLAY OF TOTAL DURATION FOR ALL MOVES OF AN EMPLOYEE BASED ON SORTIES
 

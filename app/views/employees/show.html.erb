@@ -2,21 +2,20 @@
 
 
 
-<h4><%= @employee.name %> <%= @employee.first_name %> (<%= @employee.status %>)</h4><br>
-
+<h3 class="text-center">Prestation des deux dernières semaines de <%= @employee.name %> <%= @employee.first_name %> (<%= @employee.status %>)</h3><br>
 
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 col-xs-6">
       <ul class="list-group">
         <li class="list-group-item list-group-item-heading">
           <h4 class="list-group-item-heading">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-6 col-xs-6">
                 <%= "Semaine écoulée" %>
               </div>
-              <div class="col-md-6 text-center">
+              <div class="col-md-6 col-xs-6 text-center">
                 <%= "Temps total presté" %>
               </div>
             </div>
@@ -25,15 +24,15 @@
       </ul>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-6 col-xs-6">
       <ul class="list-group">
         <li class="list-group-item list-group-item-heading">
           <h4 class="list-group-item-heading">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-6 col-xs-6">
                 <%= "Semaine précédente" %>
               </div>
-              <div class="col-md-6 text-center">
+              <div class="col-md-6 col-xs-6 text-center">
                 <%= "Temps total presté" %>
               </div>
             </div>
@@ -42,11 +41,11 @@
       </ul>
     </div>
     
-    <div class="col-md-6">
+    <div class="col-md-6 col-xs-6">
       <ul class="list-group">
         <li class="list-group-item">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 col-xs-6">
               <%= "Aujourd'hui" %><br>
               <%= "Hier" %><br>
               <%= "Avant-hier" %><br>
@@ -57,7 +56,7 @@
               <%= 7.days.ago.strftime("%A %d/%m/%Y") %><br>
             </div>
 
-            <div class="col-md-6 text-center">
+            <div class="col-md-6 col-xs-6 text-center">
              <%= @employee.display_duration_entree_this_day %><br>
              <%= @employee.display_duration_entree_one_day_before %><br>
              <%= @employee.display_duration_entree_two_days_before %><br>
@@ -73,11 +72,11 @@
     </div>
   
 
-    <div class="col-md-6">
+    <div class="col-md-6 col-xs-6">
       <ul class="list-group">
         <li class="list-group-item">
           <div class="row">
-            <div class="col-md-6">     
+            <div class="col-md-6 col-xs-6">     
               <%= 8.days.ago.strftime("%A %d/%m/%Y") %><br>
               <%= 9.days.ago.strftime("%A %d/%m/%Y") %><br>
               <%= 10.days.ago.strftime("%A %d/%m/%Y") %><br>
@@ -88,7 +87,7 @@
               <%= 15.days.ago.strftime("%A %d/%m/%Y") %><br>
             </div>
         
-            <div class="col-md-6 text-center">
+            <div class="col-md-6 col-xs-6 text-center">
               <%= @employee.display_duration_entree_eight_days_before %><br>
               <%= @employee.display_duration_entree_nine_days_before %><br>
               <%= @employee.display_duration_entree_ten_days_before %><br>
@@ -109,6 +108,10 @@
   
 
 <!-- LIST OF ALLENTREES AND SORTIES WITH EDIT BUTTON  -->
+
+<h4 class= "text-center">
+LISTE DES PRESENCES
+</h4>
 
   <div class="container-fluid">
 
@@ -172,16 +175,8 @@
     </ul>
     
   </div>
-  
 
-  
-
-
-    
-
-
-
-
+<!-- EMPLOYEE PART BELOW -->
 
 <% else %>
 
