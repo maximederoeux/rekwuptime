@@ -2,10 +2,48 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, :except => [:index, :show]
 
   def index
-    @users = User.order('name ASC')
+    @users = User.all
     @attendances = Attendance.all
     @employees = Employee.all
+
+# FROM http://www.sitepoint.com/pdf-generation-rails/
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = ReportPdf.new(@users)
+        send_data pdf.render, filename: "Semaine_#{6.days.ago.beginning_of_week.strftime("%W")}.pdf",
+                              type: 'application/pdf',
+                              disposition: "inline"
+      end
+    end
   end
+
+
+# FROM http://brandensilva.com/create-a-pdf-invoice-using-prawn-in-rails/
+    # respond_to do |format|
+    #   format.html
+    #  # format.xml
+    #   format.pdf # { render :layout => false }
+    #   format.pdf do
+    #   send_data pdf.render, filename: "Semaine_#{6.days.ago.beginning_of_week.strftime("%W")}.pdf",
+    #                         type: "application/pdf",
+    #                         disposition: "inline"
+    #   end
+    # end
+   
+
+# FROM VIDEO
+      # respond_to do |format|
+      # format.html
+      # format.pdf do
+        # pdf = WeekReport.new
+        
+        # send_data pdf.render, filename: "Semaine_#{6.days.ago.beginning_of_week.strftime("%W")}.pdf",
+        #                       type: "application/pdf",
+        #                       disposition: "inline"
+      # end
+   # end
 
   def show
     @user = User.find(params[:id])

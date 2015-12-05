@@ -762,7 +762,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_last_monday # OK
-		"#{duration_entree_last_monday_in_hours}h#{display_duration_entree_last_monday_minutes}m#{display_duration_entree_last_monday_seconds}s"
+		if duration_entree_last_monday_in_hours < 10 && display_duration_entree_last_monday_minutes < 10
+			"0#{duration_entree_last_monday_in_hours}h0#{display_duration_entree_last_monday_minutes}m"
+		elsif duration_entree_last_monday_in_hours < 10 && display_duration_entree_last_monday_minutes > 9
+			"0#{duration_entree_last_monday_in_hours}h#{display_duration_entree_last_monday_minutes}m"
+		elsif duration_entree_last_monday_in_hours > 9 && display_duration_entree_last_monday_minutes < 10
+			"#{duration_entree_last_monday_in_hours}h0#{display_duration_entree_last_monday_minutes}m"
+		elsif duration_entree_last_monday_in_hours > 9 && display_duration_entree_last_monday_minutes > 9
+			"#{duration_entree_last_monday_in_hours}h#{display_duration_entree_last_monday_minutes}m"	
+		end
 	end
 
   	def duration_entree_last_tuesday 
@@ -792,7 +800,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_last_tuesday # OK
-		"#{duration_entree_last_tuesday_in_hours}h#{display_duration_entree_last_tuesday_minutes}m#{display_duration_entree_last_tuesday_seconds}s"
+		if duration_entree_last_tuesday_in_hours < 10 && display_duration_entree_last_tuesday_minutes < 10
+			"0#{duration_entree_last_tuesday_in_hours}h0#{display_duration_entree_last_tuesday_minutes}m"
+		elsif duration_entree_last_tuesday_in_hours < 10 && display_duration_entree_last_tuesday_minutes >= 10
+			"0#{duration_entree_last_tuesday_in_hours}h#{display_duration_entree_last_tuesday_minutes}m"
+		elsif duration_entree_last_tuesday_in_hours >= 10 && display_duration_entree_last_tuesday_minutes < 10
+			"#{duration_entree_last_tuesday_in_hours}h0#{display_duration_entree_last_tuesday_minutes}m"
+		elsif duration_entree_last_tuesday_in_hours >= 10 && display_duration_entree_last_tuesday_minutes >= 10
+			"#{duration_entree_last_tuesday_in_hours}h#{display_duration_entree_last_tuesday_minutes}m"	
+		end
 	end
 
   	def duration_entree_last_wednesday 
@@ -822,7 +838,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_last_wednesday # OK
-		"#{duration_entree_last_wednesday_in_hours}h#{display_duration_entree_last_wednesday_minutes}m#{display_duration_entree_last_wednesday_seconds}s"
+		if duration_entree_last_wednesday_in_hours < 10 && display_duration_entree_last_wednesday_minutes < 10
+			"0#{duration_entree_last_wednesday_in_hours}h0#{display_duration_entree_last_wednesday_minutes}m"
+		elsif duration_entree_last_wednesday_in_hours < 10 && display_duration_entree_last_wednesday_minutes > 9
+			"0#{duration_entree_last_wednesday_in_hours}h#{display_duration_entree_last_wednesday_minutes}m"
+		elsif duration_entree_last_wednesday_in_hours > 9 && display_duration_entree_last_wednesday_minutes < 10
+			"#{duration_entree_last_wednesday_in_hours}h0#{display_duration_entree_last_wednesday_minutes}m"
+		elsif duration_entree_last_wednesday_in_hours > 9 && display_duration_entree_last_wednesday_minutes > 9
+			"#{duration_entree_last_wednesday_in_hours}h#{display_duration_entree_last_wednesday_minutes}m"	
+		end
 	end
 
   	def duration_entree_last_thursday 
@@ -852,7 +876,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_last_thursday # OK
-		"#{duration_entree_last_thursday_in_hours}h#{display_duration_entree_last_thursday_minutes}m#{display_duration_entree_last_thursday_seconds}s"
+		if duration_entree_last_thursday_in_hours < 10 && display_duration_entree_last_thursday_minutes < 10
+			"0#{duration_entree_last_thursday_in_hours}h0#{display_duration_entree_last_thursday_minutes}m"
+		elsif duration_entree_last_thursday_in_hours < 10 && display_duration_entree_last_thursday_minutes > 9
+			"0#{duration_entree_last_thursday_in_hours}h#{display_duration_entree_last_thursday_minutes}m"
+		elsif duration_entree_last_thursday_in_hours > 9 && display_duration_entree_last_thursday_minutes < 10
+			"#{duration_entree_last_thursday_in_hours}h0#{display_duration_entree_last_thursday_minutes}m"
+		elsif duration_entree_last_thursday_in_hours > 9 && display_duration_entree_last_thursday_minutes > 9
+			"#{duration_entree_last_thursday_in_hours}h#{display_duration_entree_last_thursday_minutes}m"	
+		end
 	end
 
   	def duration_entree_last_friday 
@@ -882,7 +914,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_last_friday # OK
-		"#{duration_entree_last_friday_in_hours}h#{display_duration_entree_last_friday_minutes}m#{display_duration_entree_last_friday_seconds}s"
+		if duration_entree_last_friday_in_hours < 10 && display_duration_entree_last_friday_minutes < 10
+			"0#{duration_entree_last_friday_in_hours}h0#{display_duration_entree_last_friday_minutes}m"
+		elsif duration_entree_last_friday_in_hours < 10 && display_duration_entree_last_friday_minutes > 9
+			"0#{duration_entree_last_friday_in_hours}h#{display_duration_entree_last_friday_minutes}m"
+		elsif duration_entree_last_friday_in_hours > 9 && display_duration_entree_last_friday_minutes < 10
+			"#{duration_entree_last_friday_in_hours}h0#{display_duration_entree_last_friday_minutes}m"
+		elsif duration_entree_last_friday_in_hours > 9 && display_duration_entree_last_friday_minutes > 9
+			"#{duration_entree_last_friday_in_hours}h#{display_duration_entree_last_friday_minutes}m"	
+		end
 	end
 
   	def duration_entree_last_saturday 
@@ -912,7 +952,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_last_saturday # OK
-		"#{duration_entree_last_saturday_in_hours}h#{display_duration_entree_last_saturday_minutes}m#{display_duration_entree_last_saturday_seconds}s"
+		if duration_entree_last_saturday_in_hours < 10 && display_duration_entree_last_saturday_minutes < 10
+			"0#{duration_entree_last_saturday_in_hours}h0#{display_duration_entree_last_saturday_minutes}m"
+		elsif duration_entree_last_saturday_in_hours < 10 && display_duration_entree_last_saturday_minutes >= 10
+			"0#{duration_entree_last_saturday_in_hours}h#{display_duration_entree_last_saturday_minutes}m"
+		elsif duration_entree_last_saturday_in_hours >= 10 && display_duration_entree_last_saturday_minutes < 10
+			"#{duration_entree_last_saturday_in_hours}h0#{display_duration_entree_last_saturday_minutes}m"
+		elsif duration_entree_last_saturday_in_hours >= 10 && display_duration_entree_last_saturday_minutes >= 10
+			"#{duration_entree_last_saturday_in_hours}h#{display_duration_entree_last_saturday_minutes}m"	
+		end
 	end
 
   	def duration_entree_last_sunday 
@@ -938,11 +986,19 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_last_sunday_seconds
-		duration_entree_last_sunday - duration_entree_last_sunday_in_minutes*60
+		duration_entree_last_sunday - duration_entree_last_sunday_minutes*60
 	end
 
 	def display_duration_entree_last_sunday # OK
-		"#{duration_entree_last_sunday_in_hours}h#{display_duration_entree_last_sunday_minutes}m#{display_duration_entree_last_sunday_seconds}s"
+		if duration_entree_last_sunday_in_hours < 10 && display_duration_entree_last_sunday_minutes < 10
+			"0#{duration_entree_last_sunday_in_hours}h0#{display_duration_entree_last_sunday_minutes}m"
+		elsif duration_entree_last_sunday_in_hours < 10 && display_duration_entree_last_sunday_minutes > 9
+			"0#{duration_entree_last_sunday_in_hours}h#{display_duration_entree_last_sunday_minutes}m"
+		elsif duration_entree_last_sunday_in_hours > 9 && display_duration_entree_last_sunday_minutes < 10
+			"#{duration_entree_last_sunday_in_hours}h0#{display_duration_entree_last_sunday_minutes}m"
+		elsif duration_entree_last_sunday_in_hours > 9 && display_duration_entree_last_sunday_minutes > 9
+			"#{duration_entree_last_sunday_in_hours}h#{display_duration_entree_last_sunday_minutes}m"	
+		end
 	end
 
   	def duration_entree_last_week 
@@ -972,6 +1028,14 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_last_week # OK
-		"#{duration_entree_last_week_in_hours}h#{display_duration_entree_last_week_minutes}m#{display_duration_entree_last_week_seconds}s"
-	end	
+		if duration_entree_last_week_in_hours < 10 && display_duration_entree_last_week_minutes < 10
+			"0#{duration_entree_last_week_in_hours}h0#{display_duration_entree_last_week_minutes}m"
+		elsif duration_entree_last_week_in_hours < 10 && display_duration_entree_last_week_minutes > 9
+			"0#{duration_entree_last_week_in_hours}h#{display_duration_entree_last_week_minutes}m"
+		elsif duration_entree_last_week_in_hours > 9 && display_duration_entree_last_week_minutes < 10
+			"#{duration_entree_last_week_in_hours}h0#{display_duration_entree_last_week_minutes}m"
+		elsif duration_entree_last_week_in_hours > 9 && display_duration_entree_last_week_minutes > 9
+			"#{duration_entree_last_week_in_hours}h#{display_duration_entree_last_week_minutes}m"	
+		end
+	end
 end
