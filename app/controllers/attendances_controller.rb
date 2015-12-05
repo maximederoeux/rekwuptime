@@ -32,7 +32,7 @@ class AttendancesController < ApplicationController
     respond_to do |format|
       if @attendance.save
         if @attendance.entree
-        format.html { redirect_to employees_path, notice: 'Vous êtes bien enregistré'}
+        format.html { redirect_to employees_path, notice: 'Vous êtes bien connecté'}
       elsif @attendance.sortie
         format.html { redirect_to employees_path, notice: 'Vous êtes bien déconnecté.'}
       end
@@ -55,7 +55,7 @@ class AttendancesController < ApplicationController
   def update
     respond_to do |format|
       if @attendance.update(attendance_params)
-        format.html { redirect_to @attendance, notice: 'Attendance was successfully updated.' }
+        format.html { redirect_to @attendance, notice: 'Le mouvement a été mis à jour.' }
         format.json { render :show, status: :ok, location: @attendance }
       else
         format.html { render :edit }

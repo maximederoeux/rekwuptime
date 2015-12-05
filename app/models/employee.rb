@@ -231,7 +231,7 @@ class Employee < ActiveRecord::Base
 		end
 	end
 
-	def display_duration_entree_seconds(attendance)
+	def display_duration_entree_seconds(attendance)(attendance)
 		if next_sortie(attendance)
 		duration_entree(attendance) - duration_entree_in_minutes(attendance)*60
 		end
@@ -242,6 +242,28 @@ class Employee < ActiveRecord::Base
 		"#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}s"
 		end
 	end
+
+	def display_duration_entree_nice(attendance) # OK
+		if duration_entree_in_hours(attendance) < 10 && display_duration_entree_minutes(attendance) < 10 && display_duration_entree_seconds(attendance) < 10
+			"0#{duration_entree_in_hours(attendance)}h0#{display_duration_entree_minutes(attendance)}m0#{display_duration_entree_seconds(attendance)}"
+		elsif duration_entree_in_hours(attendance) < 10 && display_duration_entree_minutes(attendance) < 10 && display_duration_entree_seconds(attendance) > 9
+			"0#{duration_entree_in_hours(attendance)}h0#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}"
+		elsif duration_entree_in_hours(attendance) < 10 && display_duration_entree_minutes(attendance) > 9 && display_duration_entree_seconds(attendance) < 10
+			"0#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m0#{display_duration_entree_seconds(attendance)}"
+		elsif duration_entree_in_hours(attendance) < 10 && display_duration_entree_minutes(attendance) > 9 && display_duration_entree_seconds(attendance) >	9
+			"0#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}"	
+		elsif duration_entree_in_hours(attendance) > 9 && display_duration_entree_minutes(attendance) < 10 && display_duration_entree_seconds(attendance) < 10
+			"#{duration_entree_in_hours(attendance)}h0#{display_duration_entree_minutes(attendance)}m0#{display_duration_entree_seconds(attendance)}"
+		elsif duration_entree_in_hours(attendance) > 9 && display_duration_entree_minutes(attendance) < 10 && display_duration_entree_seconds(attendance) > 9
+			"#{duration_entree_in_hours(attendance)}h0#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}"	
+		elsif duration_entree_in_hours(attendance) > 9 && display_duration_entree_minutes(attendance) > 9 && display_duration_entree_seconds(attendance) < 10
+			"#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m0#{display_duration_entree_seconds(attendance)}"
+		elsif duration_entree_in_hours(attendance) > 9 && display_duration_entree_minutes(attendance) > 9 && display_duration_entree_seconds(attendance) > 9
+			"#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}"	
+		end
+	end
+
+
 
 	def total_duration_entree
 		# total duration of attendance for an employee based on the entrees
@@ -282,7 +304,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_this_day # OK
-		"#{duration_entree_this_day_in_hours}h#{display_duration_entree_this_day_minutes}m#{display_duration_entree_this_day_seconds}s"
+		if duration_entree_this_day_in_hours < 10 && display_duration_entree_this_day_minutes < 10
+			"0#{duration_entree_this_day_in_hours}h0#{display_duration_entree_this_day_minutes}m"
+		elsif duration_entree_this_day_in_hours < 10 && display_duration_entree_this_day_minutes > 9
+			"0#{duration_entree_this_day_in_hours}h#{display_duration_entree_this_day_minutes}m"
+		elsif duration_entree_this_day_in_hours > 9 && display_duration_entree_this_day_minutes < 10
+			"#{duration_entree_this_day_in_hours}h0#{display_duration_entree_this_day_minutes}m"
+		elsif duration_entree_this_day_in_hours > 9 && display_duration_entree_this_day_minutes > 9
+			"#{duration_entree_this_day_in_hours}h#{display_duration_entree_this_day_minutes}m"	
+		end
 	end
 
   	def duration_entree_one_day_before 
@@ -312,7 +342,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_one_day_before # OK
-		"#{duration_entree_one_day_before_in_hours}h#{display_duration_entree_one_day_before_minutes}m#{display_duration_entree_one_day_before_seconds}s"
+		if duration_entree_one_day_before_in_hours < 10 && display_duration_entree_one_day_before_minutes < 10
+			"0#{duration_entree_one_day_before_in_hours}h0#{display_duration_entree_one_day_before_minutes}m"
+		elsif duration_entree_one_day_before_in_hours < 10 && display_duration_entree_one_day_before_minutes > 9
+			"0#{duration_entree_one_day_before_in_hours}h#{display_duration_entree_one_day_before_minutes}m"
+		elsif duration_entree_one_day_before_in_hours > 9 && display_duration_entree_one_day_before_minutes < 10
+			"#{duration_entree_one_day_before_in_hours}h0#{display_duration_entree_one_day_before_minutes}m"
+		elsif duration_entree_one_day_before_in_hours > 9 && display_duration_entree_one_day_before_minutes > 9
+			"#{duration_entree_one_day_before_in_hours}h#{display_duration_entree_one_day_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_two_days_before 
@@ -342,7 +380,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_two_days_before # OK
-		"#{duration_entree_two_days_before_in_hours}h#{display_duration_entree_two_days_before_minutes}m#{display_duration_entree_two_days_before_seconds}s"
+		if duration_entree_two_days_before_in_hours < 10 && display_duration_entree_two_days_before_minutes < 10
+			"0#{duration_entree_two_days_before_in_hours}h0#{display_duration_entree_two_days_before_minutes}m"
+		elsif duration_entree_two_days_before_in_hours < 10 && display_duration_entree_two_days_before_minutes > 9
+			"0#{duration_entree_two_days_before_in_hours}h#{display_duration_entree_two_days_before_minutes}m"
+		elsif duration_entree_two_days_before_in_hours > 9 && display_duration_entree_two_days_before_minutes < 10
+			"#{duration_entree_two_days_before_in_hours}h0#{display_duration_entree_two_days_before_minutes}m"
+		elsif duration_entree_two_days_before_in_hours > 9 && display_duration_entree_two_days_before_minutes > 9
+			"#{duration_entree_two_days_before_in_hours}h#{display_duration_entree_two_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_three_days_before 
@@ -372,7 +418,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_three_days_before # OK
-		"#{duration_entree_three_days_before_in_hours}h#{display_duration_entree_three_days_before_minutes}m#{display_duration_entree_three_days_before_seconds}s"
+		if duration_entree_three_days_before_in_hours < 10 && display_duration_entree_three_days_before_minutes < 10
+			"0#{duration_entree_three_days_before_in_hours}h0#{display_duration_entree_three_days_before_minutes}m"
+		elsif duration_entree_three_days_before_in_hours < 10 && display_duration_entree_three_days_before_minutes > 9
+			"0#{duration_entree_three_days_before_in_hours}h#{display_duration_entree_three_days_before_minutes}m"
+		elsif duration_entree_three_days_before_in_hours > 9 && display_duration_entree_three_days_before_minutes < 10
+			"#{duration_entree_three_days_before_in_hours}h0#{display_duration_entree_three_days_before_minutes}m"
+		elsif duration_entree_three_days_before_in_hours > 9 && display_duration_entree_three_days_before_minutes > 9
+			"#{duration_entree_three_days_before_in_hours}h#{display_duration_entree_three_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_four_days_before 
@@ -402,7 +456,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_four_days_before # OK
-		"#{duration_entree_four_days_before_in_hours}h#{display_duration_entree_four_days_before_minutes}m#{display_duration_entree_four_days_before_seconds}s"
+		if duration_entree_four_days_before_in_hours < 10 && display_duration_entree_four_days_before_minutes < 10
+			"0#{duration_entree_four_days_before_in_hours}h0#{display_duration_entree_four_days_before_minutes}m"
+		elsif duration_entree_four_days_before_in_hours < 10 && display_duration_entree_four_days_before_minutes > 9
+			"0#{duration_entree_four_days_before_in_hours}h#{display_duration_entree_four_days_before_minutes}m"
+		elsif duration_entree_four_days_before_in_hours > 9 && display_duration_entree_four_days_before_minutes < 10
+			"#{duration_entree_four_days_before_in_hours}h0#{display_duration_entree_four_days_before_minutes}m"
+		elsif duration_entree_four_days_before_in_hours > 9 && display_duration_entree_four_days_before_minutes > 9
+			"#{duration_entree_four_days_before_in_hours}h#{display_duration_entree_four_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_five_days_before 
@@ -432,7 +494,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_five_days_before # OK
-		"#{duration_entree_five_days_before_in_hours}h#{display_duration_entree_five_days_before_minutes}m#{display_duration_entree_five_days_before_seconds}s"
+		if duration_entree_five_days_before_in_hours < 10 && display_duration_entree_five_days_before_minutes < 10
+			"0#{duration_entree_five_days_before_in_hours}h0#{display_duration_entree_five_days_before_minutes}m"
+		elsif duration_entree_five_days_before_in_hours < 10 && display_duration_entree_five_days_before_minutes > 9
+			"0#{duration_entree_five_days_before_in_hours}h#{display_duration_entree_five_days_before_minutes}m"
+		elsif duration_entree_five_days_before_in_hours > 9 && display_duration_entree_five_days_before_minutes < 10
+			"#{duration_entree_five_days_before_in_hours}h0#{display_duration_entree_five_days_before_minutes}m"
+		elsif duration_entree_five_days_before_in_hours > 9 && display_duration_entree_five_days_before_minutes > 9
+			"#{duration_entree_five_days_before_in_hours}h#{display_duration_entree_five_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_six_days_before 
@@ -462,7 +532,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_six_days_before # OK
-		"#{duration_entree_six_days_before_in_hours}h#{display_duration_entree_six_days_before_minutes}m#{display_duration_entree_six_days_before_seconds}s"
+		if duration_entree_six_days_before_in_hours < 10 && display_duration_entree_six_days_before_minutes < 10
+			"0#{duration_entree_six_days_before_in_hours}h0#{display_duration_entree_six_days_before_minutes}m"
+		elsif duration_entree_six_days_before_in_hours < 10 && display_duration_entree_six_days_before_minutes > 9
+			"0#{duration_entree_six_days_before_in_hours}h#{display_duration_entree_six_days_before_minutes}m"
+		elsif duration_entree_six_days_before_in_hours > 9 && display_duration_entree_six_days_before_minutes < 10
+			"#{duration_entree_six_days_before_in_hours}h0#{display_duration_entree_six_days_before_minutes}m"
+		elsif duration_entree_six_days_before_in_hours > 9 && display_duration_entree_six_days_before_minutes > 9
+			"#{duration_entree_six_days_before_in_hours}h#{display_duration_entree_six_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_seven_days_before 
@@ -492,7 +570,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_seven_days_before # OK
-		"#{duration_entree_seven_days_before_in_hours}h#{display_duration_entree_seven_days_before_minutes}m#{display_duration_entree_seven_days_before_seconds}s"
+		if duration_entree_seven_days_before_in_hours < 10 && display_duration_entree_seven_days_before_minutes < 10
+			"0#{duration_entree_seven_days_before_in_hours}h0#{display_duration_entree_seven_days_before_minutes}m"
+		elsif duration_entree_seven_days_before_in_hours < 10 && display_duration_entree_seven_days_before_minutes > 9
+			"0#{duration_entree_seven_days_before_in_hours}h#{display_duration_entree_seven_days_before_minutes}m"
+		elsif duration_entree_seven_days_before_in_hours > 9 && display_duration_entree_seven_days_before_minutes < 10
+			"#{duration_entree_seven_days_before_in_hours}h0#{display_duration_entree_seven_days_before_minutes}m"
+		elsif duration_entree_seven_days_before_in_hours > 9 && display_duration_entree_seven_days_before_minutes > 9
+			"#{duration_entree_seven_days_before_in_hours}h#{display_duration_entree_seven_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_eight_days_before 
@@ -522,7 +608,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_eight_days_before # OK
-		"#{duration_entree_eight_days_before_in_hours}h#{display_duration_entree_eight_days_before_minutes}m#{display_duration_entree_eight_days_before_seconds}s"
+		if duration_entree_eight_days_before_in_hours < 10 && display_duration_entree_eight_days_before_minutes < 10
+			"0#{duration_entree_eight_days_before_in_hours}h0#{display_duration_entree_eight_days_before_minutes}m"
+		elsif duration_entree_eight_days_before_in_hours < 10 && display_duration_entree_eight_days_before_minutes > 9
+			"0#{duration_entree_eight_days_before_in_hours}h#{display_duration_entree_eight_days_before_minutes}m"
+		elsif duration_entree_eight_days_before_in_hours > 9 && display_duration_entree_eight_days_before_minutes < 10
+			"#{duration_entree_eight_days_before_in_hours}h0#{display_duration_entree_eight_days_before_minutes}m"
+		elsif duration_entree_eight_days_before_in_hours > 9 && display_duration_entree_eight_days_before_minutes > 9
+			"#{duration_entree_eight_days_before_in_hours}h#{display_duration_entree_eight_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_nine_days_before 
@@ -552,7 +646,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_nine_days_before # OK
-		"#{duration_entree_nine_days_before_in_hours}h#{display_duration_entree_nine_days_before_minutes}m#{display_duration_entree_nine_days_before_seconds}s"
+		if duration_entree_nine_days_before_in_hours < 10 && display_duration_entree_nine_days_before_minutes < 10
+			"0#{duration_entree_nine_days_before_in_hours}h0#{display_duration_entree_nine_days_before_minutes}m"
+		elsif duration_entree_nine_days_before_in_hours < 10 && display_duration_entree_nine_days_before_minutes > 9
+			"0#{duration_entree_nine_days_before_in_hours}h#{display_duration_entree_nine_days_before_minutes}m"
+		elsif duration_entree_nine_days_before_in_hours > 9 && display_duration_entree_nine_days_before_minutes < 10
+			"#{duration_entree_nine_days_before_in_hours}h0#{display_duration_entree_nine_days_before_minutes}m"
+		elsif duration_entree_nine_days_before_in_hours > 9 && display_duration_entree_nine_days_before_minutes > 9
+			"#{duration_entree_nine_days_before_in_hours}h#{display_duration_entree_nine_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_ten_days_before 
@@ -582,7 +684,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_ten_days_before # OK
-		"#{duration_entree_ten_days_before_in_hours}h#{display_duration_entree_ten_days_before_minutes}m#{display_duration_entree_ten_days_before_seconds}s"
+		if duration_entree_ten_days_before_in_hours < 10 && display_duration_entree_ten_days_before_minutes < 10
+			"0#{duration_entree_ten_days_before_in_hours}h0#{display_duration_entree_ten_days_before_minutes}m"
+		elsif duration_entree_ten_days_before_in_hours < 10 && display_duration_entree_ten_days_before_minutes > 9
+			"0#{duration_entree_ten_days_before_in_hours}h#{display_duration_entree_ten_days_before_minutes}m"
+		elsif duration_entree_ten_days_before_in_hours > 9 && display_duration_entree_ten_days_before_minutes < 10
+			"#{duration_entree_ten_days_before_in_hours}h0#{display_duration_entree_ten_days_before_minutes}m"
+		elsif duration_entree_ten_days_before_in_hours > 9 && display_duration_entree_ten_days_before_minutes > 9
+			"#{duration_entree_ten_days_before_in_hours}h#{display_duration_entree_ten_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_eleven_days_before 
@@ -612,7 +722,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_eleven_days_before # OK
-		"#{duration_entree_eleven_days_before_in_hours}h#{display_duration_entree_eleven_days_before_minutes}m#{display_duration_entree_eleven_days_before_seconds}s"
+		if duration_entree_eleven_days_before_in_hours < 10 && display_duration_entree_eleven_days_before_minutes < 10
+			"0#{duration_entree_eleven_days_before_in_hours}h0#{display_duration_entree_eleven_days_before_minutes}m"
+		elsif duration_entree_eleven_days_before_in_hours < 10 && display_duration_entree_eleven_days_before_minutes > 9
+			"0#{duration_entree_eleven_days_before_in_hours}h#{display_duration_entree_eleven_days_before_minutes}m"
+		elsif duration_entree_eleven_days_before_in_hours > 9 && display_duration_entree_eleven_days_before_minutes < 10
+			"#{duration_entree_eleven_days_before_in_hours}h0#{display_duration_entree_eleven_days_before_minutes}m"
+		elsif duration_entree_eleven_days_before_in_hours > 9 && display_duration_entree_eleven_days_before_minutes > 9
+			"#{duration_entree_eleven_days_before_in_hours}h#{display_duration_entree_eleven_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_twelve_days_before 
@@ -642,7 +760,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_twelve_days_before # OK
-		"#{duration_entree_twelve_days_before_in_hours}h#{display_duration_entree_twelve_days_before_minutes}m#{display_duration_entree_twelve_days_before_seconds}s"
+		if duration_entree_twelve_days_before_in_hours < 10 && display_duration_entree_twelve_days_before_minutes < 10
+			"0#{duration_entree_twelve_days_before_in_hours}h0#{display_duration_entree_twelve_days_before_minutes}m"
+		elsif duration_entree_twelve_days_before_in_hours < 10 && display_duration_entree_twelve_days_before_minutes > 9
+			"0#{duration_entree_twelve_days_before_in_hours}h#{display_duration_entree_twelve_days_before_minutes}m"
+		elsif duration_entree_twelve_days_before_in_hours > 9 && display_duration_entree_twelve_days_before_minutes < 10
+			"#{duration_entree_twelve_days_before_in_hours}h0#{display_duration_entree_twelve_days_before_minutes}m"
+		elsif duration_entree_twelve_days_before_in_hours > 9 && display_duration_entree_twelve_days_before_minutes > 9
+			"#{duration_entree_twelve_days_before_in_hours}h#{display_duration_entree_twelve_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_thirteen_days_before 
@@ -672,7 +798,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_thirteen_days_before # OK
-		"#{duration_entree_thirteen_days_before_in_hours}h#{display_duration_entree_thirteen_days_before_minutes}m#{display_duration_entree_thirteen_days_before_seconds}s"
+		if duration_entree_thirteen_days_before_in_hours < 10 && display_duration_entree_thirteen_days_before_minutes < 10
+			"0#{duration_entree_thirteen_days_before_in_hours}h0#{display_duration_entree_thirteen_days_before_minutes}m"
+		elsif duration_entree_thirteen_days_before_in_hours < 10 && display_duration_entree_thirteen_days_before_minutes > 9
+			"0#{duration_entree_thirteen_days_before_in_hours}h#{display_duration_entree_thirteen_days_before_minutes}m"
+		elsif duration_entree_thirteen_days_before_in_hours > 9 && display_duration_entree_thirteen_days_before_minutes < 10
+			"#{duration_entree_thirteen_days_before_in_hours}h0#{display_duration_entree_thirteen_days_before_minutes}m"
+		elsif duration_entree_thirteen_days_before_in_hours > 9 && display_duration_entree_thirteen_days_before_minutes > 9
+			"#{duration_entree_thirteen_days_before_in_hours}h#{display_duration_entree_thirteen_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_fourteen_days_before 
@@ -702,7 +836,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_fourteen_days_before # OK
-		"#{duration_entree_fourteen_days_before_in_hours}h#{display_duration_entree_fourteen_days_before_minutes}m#{display_duration_entree_fourteen_days_before_seconds}s"
+		if duration_entree_fourteen_days_before_in_hours < 10 && display_duration_entree_fourteen_days_before_minutes < 10
+			"0#{duration_entree_fourteen_days_before_in_hours}h0#{display_duration_entree_fourteen_days_before_minutes}m"
+		elsif duration_entree_fourteen_days_before_in_hours < 10 && display_duration_entree_fourteen_days_before_minutes > 9
+			"0#{duration_entree_fourteen_days_before_in_hours}h#{display_duration_entree_fourteen_days_before_minutes}m"
+		elsif duration_entree_fourteen_days_before_in_hours > 9 && display_duration_entree_fourteen_days_before_minutes < 10
+			"#{duration_entree_fourteen_days_before_in_hours}h0#{display_duration_entree_fourteen_days_before_minutes}m"
+		elsif duration_entree_fourteen_days_before_in_hours > 9 && display_duration_entree_fourteen_days_before_minutes > 9
+			"#{duration_entree_fourteen_days_before_in_hours}h#{display_duration_entree_fourteen_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_fifteen_days_before 
@@ -732,7 +874,15 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_fifteen_days_before # OK
-		"#{duration_entree_fifteen_days_before_in_hours}h#{display_duration_entree_fifteen_days_before_minutes}m#{display_duration_entree_fifteen_days_before_seconds}s"
+		if duration_entree_fifteen_days_before_in_hours < 10 && display_duration_entree_fifteen_days_before_minutes < 10
+			"0#{duration_entree_fifteen_days_before_in_hours}h0#{display_duration_entree_fifteen_days_before_minutes}m"
+		elsif duration_entree_fifteen_days_before_in_hours < 10 && display_duration_entree_fifteen_days_before_minutes > 9
+			"0#{duration_entree_fifteen_days_before_in_hours}h#{display_duration_entree_fifteen_days_before_minutes}m"
+		elsif duration_entree_fifteen_days_before_in_hours > 9 && display_duration_entree_fifteen_days_before_minutes < 10
+			"#{duration_entree_fifteen_days_before_in_hours}h0#{display_duration_entree_fifteen_days_before_minutes}m"
+		elsif duration_entree_fifteen_days_before_in_hours > 9 && display_duration_entree_fifteen_days_before_minutes > 9
+			"#{duration_entree_fifteen_days_before_in_hours}h#{display_duration_entree_fifteen_days_before_minutes}m"	
+		end
 	end
 
   	def duration_entree_last_monday 

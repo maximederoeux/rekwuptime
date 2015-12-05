@@ -112,7 +112,7 @@
 <!-- LIST OF ALLENTREES AND SORTIES WITH EDIT BUTTON  -->
 
 <h4 class= "text-center">
-LISTE DES PRESENCES
+PRESENCES DES 30 DERNIERS JOURS
 </h4>
 
   <div class="container-fluid">
@@ -134,7 +134,7 @@ LISTE DES PRESENCES
       </li>
 
 
-      <% @employee.entrees.each do |entree| %>
+      <% @employee.entrees.last_thirty_days.each do |entree| %>
 
         <li class="list-group-item">
           <div class="row">
@@ -168,7 +168,7 @@ LISTE DES PRESENCES
             </div>
 
             <div class="col-md-3">
-              <%= @employee.display_duration_entree(entree) %>
+              <%= @employee.display_duration_entree_nice(entree) %>
             </div>
           </div>
           

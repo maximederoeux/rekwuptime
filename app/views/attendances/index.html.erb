@@ -16,14 +16,19 @@
   </thead>
 
   <tbody>
-    <% @attendances.each do |attendance| %>
+    <% @attendances.last_two_months.each do |attendance| %>
       <tr>
         <td><%= attendance.employee.full_name %></td>
         <td><%= attendance.content %></td>
         <td><%= attendance.created_at.strftime("%A %d/%m/%Y") %></td>
-        <td><%= attendance.created_at.strftime("%H:%M") %></td>
-        <td><%= link_to 'Show', attendance %></td>
-        <td><%= link_to 'Détails', edit_attendance_path(attendance) %></td>
+        <td><%= attendance.created_at.strftime("%H:%M") %>
+            <%= link_to edit_attendance_path(attendance) do %>
+                      <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
+            <% end %>
+
+        </td>
+        
+        
         </tr>
     <% end %>
   </tbody>
@@ -31,7 +36,7 @@
 
 <br>
 
-<%= link_to 'New Attendance', new_attendance_path %>
+<!-- <%= link_to 'New Attendance', new_attendance_path %> -->
 
 <% else %>
 

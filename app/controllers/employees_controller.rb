@@ -35,7 +35,7 @@ class EmployeesController < ApplicationController
 
     respond_to do |format|
       if @employee.save
-        format.html { redirect_to @employee, notice: 'Employee was successfully created.' }
+        format.html { redirect_to @employee, notice: 'Le nouveau travailleur est bien enregistré' }
         format.json { render :show, status: :created, location: @employee }
       else
         format.html { render :new }
@@ -49,7 +49,7 @@ class EmployeesController < ApplicationController
   def update
     respond_to do |format|
       if @employee.update(employee_params)
-        format.html { redirect_to @employee, notice: 'Employee was successfully updated.' }
+        format.html { redirect_to @employee, notice: 'Les informations du travailleur ont été mises à jour.' }
         format.json { render :show, status: :ok, location: @employee }
       else
         format.html { render :edit }

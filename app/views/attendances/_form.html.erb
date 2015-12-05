@@ -1,35 +1,42 @@
 <% if user_signed_in? %>
 
-	<%= simple_form_for(@attendance) do |f| %>
-	  <%= f.error_notification %>
 
-    	<strong>ID: </strong> <%= @attendance.id %><br>
 
-      <strong>Nom: </strong><%= @attendance.employee.full_name %><br><br>
+  <h4> 
 
-      <strong>Changer de travailleur:  </strong>
+  	<%= simple_form_for(@attendance) do |f| %>
+  	  <%= f.error_notification %>
 
-      <%= f.collection_select :employee_id, Employee.all, :id, :full_name, {prompt: true} %><br><br>
+      	<strong>ID: </strong> <%= @attendance.id %><br>
 
-      <strong>Date: </strong><%= @attendance.created_at.strftime("%A %d/%m/%Y") %><br>
-      <strong>Heure: </strong><%= @attendance.created_at.strftime("%H:%M") %><br>
-      <br>
+        <strong>Nom: </strong><%= @attendance.employee.full_name %><br>
 
-      <strong>Modifier le moment:  </strong><%= f.input :created_at %>
-	    
-      <strong>Modifier le mouvement:</strong><br>
-      <strong>Attention, uniquement entree ou sortie. sans accents et en minuscules</strong><br><br>
-      <%= f.input :content %>
- 
+        <strong>Changer de travailleur:  </strong>
 
-  
-  	<div class="form-actions">
+        <%= f.collection_select :employee_id, Employee.all, :id, :full_name, {prompt: true} %><br><br>
 
-    	<%= f.button :submit, class: "btn btn-default" %>
+        <strong>Date: </strong><%= @attendance.created_at.strftime("%A %d/%m/%Y") %><br>
+        <strong>Heure: </strong><%= @attendance.created_at.strftime("%H:%M") %><br>
+        <br>
 
-  	</div>
+        <strong>Modifier le moment:  </strong><%= f.input :created_at %>
+  	    
+        <strong>Modifier le mouvement:</strong><br>
+        <strong>Attention, uniquement entree ou sortie. sans accents et en minuscules</strong><br><br>
+        <%= f.input :content %>
+       
+    	   <div class="form-actions">
+      	   <%= f.button :submit, class: "btn btn-default" %>
+    	   </div>
+         
+    <% end %>
 
-  	<% end %>
+
+  </h4>
+
+  <%= link_to 'Retour', attendances_path, class: "btn btn-success btn-lg text-center" %>
+
+
 
 <% else %>
 

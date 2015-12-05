@@ -34,6 +34,8 @@ class Attendance < ActiveRecord::Base
 	scope :last_sunday, lambda {where(:created_at => ((6.days.ago.beginning_of_week + 6.days).beginning_of_day..(6.days.ago.beginning_of_week + 6.days).end_of_day))}
 
 	scope :current_month, lambda {where(:created_at => (Date.current.beginning_of_month..Date.current.end_of_month))}
+	scope :last_thirty_days, lambda {where(:created_at => (30.days.ago.beginning_of_day..Date.current.end_of_day))}
+	scope :last_two_months, lambda {where(:created_at => (2.months.ago.beginning_of_month..Date.current.end_of_month))}
 
 
 def my_date
