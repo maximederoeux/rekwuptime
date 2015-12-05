@@ -1038,4 +1038,43 @@ class Employee < ActiveRecord::Base
 			"#{duration_entree_last_week_in_hours}h#{display_duration_entree_last_week_minutes}m"	
 		end
 	end
+
+  	def duration_entree_current_month 
+  		duration_entree_current_month = 0
+		attendances.entree.current_month.each do |entree|
+			if next_sortie(entree)
+			duration_entree_current_month += duration_entree(entree)
+			end
+		end
+		duration_entree_current_month	
+  	end
+
+	def duration_entree_current_month_in_minutes
+		(duration_entree_current_month / 60).floor
+	end
+
+	def duration_entree_current_month_in_hours
+		(duration_entree_current_month_in_minutes / 60).floor
+	end
+
+	def display_duration_entree_current_month_minutes		
+		duration_entree_current_month_in_minutes - duration_entree_current_month_in_hours*60		
+	end
+
+	def display_duration_entree_current_month_seconds
+		duration_entree_current_month - duration_entree_current_month_in_minutes*60
+	end
+
+	def display_duration_entree_current_month # OK
+		if duration_entree_current_month_in_hours < 10 && display_duration_entree_current_month_minutes < 10
+			"0#{duration_entree_current_month_in_hours}h0#{display_duration_entree_current_month_minutes}m"
+		elsif duration_entree_current_month_in_hours < 10 && display_duration_entree_current_month_minutes > 9
+			"0#{duration_entree_current_month_in_hours}h#{display_duration_entree_current_month_minutes}m"
+		elsif duration_entree_current_month_in_hours > 9 && display_duration_entree_current_month_minutes < 10
+			"#{duration_entree_current_month_in_hours}h0#{display_duration_entree_current_month_minutes}m"
+		elsif duration_entree_current_month_in_hours > 9 && display_duration_entree_current_month_minutes > 9
+			"#{duration_entree_current_month_in_hours}h#{display_duration_entree_current_month_minutes}m"	
+		end
+	end
+
 end

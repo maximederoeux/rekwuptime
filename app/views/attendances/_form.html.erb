@@ -3,22 +3,24 @@
 	<%= simple_form_for(@attendance) do |f| %>
 	  <%= f.error_notification %>
 
-    	<%= @attendance.id %><br>
-      <%= @attendance.employee_id %>
-      <%= @attendance.employee.full_name %>
+    	<strong>ID: </strong> <%= @attendance.id %><br>
 
+      <strong>Nom: </strong><%= @attendance.employee.full_name %><br><br>
 
-      <%= f.collection_select :employee_id, Employee.all, :id, :full_name, {prompt: true} %>
+      <strong>Changer de travailleur:  </strong>
 
+      <%= f.collection_select :employee_id, Employee.all, :id, :full_name, {prompt: true} %><br><br>
 
-      
-      <%= f.input :created_at %>
+      <strong>Date: </strong><%= @attendance.created_at.strftime("%A %d/%m/%Y") %><br>
+      <strong>Heure: </strong><%= @attendance.created_at.strftime("%H:%M") %><br>
+      <br>
+
+      <strong>Modifier le moment:  </strong><%= f.input :created_at %>
 	    
-
-      <select class="form-control">
-        <option><%= f.input :content, :value => "entree" %></option>
-        <option><%= f.input :content, :value => "sortie" %></option>        
-      </select>
+      <strong>Modifier le mouvement:</strong><br>
+      <strong>Attention, uniquement entree ou sortie. sans accents et en minuscules</strong><br><br>
+      <%= f.input :content %>
+ 
 
   
   	<div class="form-actions">

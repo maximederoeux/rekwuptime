@@ -23,7 +23,7 @@
         <td><%= attendance.created_at.strftime("%A %d/%m/%Y") %></td>
         <td><%= attendance.created_at.strftime("%H:%M") %></td>
         <td><%= link_to 'Show', attendance %></td>
-        <td><%= link_to 'Edit', edit_attendance_path(attendance) %></td>
+        <td><%= link_to 'Détails', edit_attendance_path(attendance) %></td>
         </tr>
     <% end %>
   </tbody>

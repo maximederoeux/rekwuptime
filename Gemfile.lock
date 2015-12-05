@@ -97,6 +97,7 @@ GEM
       mini_portile2 (~> 2.0.0.rc2)
     orm_adapter (0.5.0)
     pdf-core (0.6.0)
+    pg (0.18.4)
     prawn (2.0.2)
       pdf-core (~> 0.6.0)
       ttfunk (~> 1.4.0)
@@ -187,6 +188,7 @@ DEPENDENCIES
   high_voltage
   jbuilder (~> 2.0)
   jquery-rails
+  pg
   prawn
   quiet_assets
   rails (= 4.2.4)

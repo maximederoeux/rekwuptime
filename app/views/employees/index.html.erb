@@ -12,8 +12,9 @@
             <th>Id</th>
             <th>Nom et prénom</th>
             <th>Statut</th>
-            <th>Content</th>
-            <th colspan="4"></th>
+            <th class="text-center">Situation actuelle</th>
+            <th class="text-center">Total Mois en cours</th>
+            <th colspan="5"></th>
           </tr>
         </thead>
 
@@ -29,13 +30,15 @@
 
               <td><%= employee.status %></td>
 
-              <td>
+              <td class="text-center">
                 <% if employee.attendances.last %>
                   <%= employee.attendances.last.content_display %>
                 <% else %>
                   Absent(e)
                 <% end %>
               </td>
+
+              <td class="text-center"><%= employee.display_duration_entree_current_month %></td>
                           
               <!-- <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
             </tr>
