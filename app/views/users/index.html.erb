@@ -1,6 +1,6 @@
 <% if user_signed_in? %>
 
-<%= link_to "Enregistrer le rapport (PDF)", users_path(@user, format: "pdf") %>
+<%= link_to "Enregistrer le rapport (PDF)", users_path(@user, format: "pdf"), class: "btn btn-default" %>
 
 
 <div class="container-fluid">

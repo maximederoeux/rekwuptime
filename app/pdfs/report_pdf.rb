@@ -32,8 +32,8 @@ class ReportPdf < Prawn::Document
 
     # The bounding_box takes the x and y coordinates for positioning its content and some options to style it
     bounding_box([0, y_position], :width => 270, :height => 50) do
-      text "Rapport de la semaine #{6.days.ago.beginning_of_week.strftime("%W")}", size: 15, style: :bold
-      text "Du lundi #{6.days.ago.beginning_of_week.strftime("%d/%m/%Y")} au dimanche #{(6.days.ago.beginning_of_week + 6.days).strftime("%d/%m/%Y")}"
+      text "Rapport de la semaine #{6.days.ago.beginning_of_week.strftime("%W")}", size: 12, style: :bold
+      text "Du lundi #{6.days.ago.beginning_of_week.strftime("%d/%m/%Y")} au dimanche #{(6.days.ago.beginning_of_week + 6.days).strftime("%d/%m/%Y")}", size: 11
       # @employees.each do |employee|
       # 	"#{employee.name}"
       # end
@@ -66,21 +66,37 @@ class ReportPdf < Prawn::Document
 
 	def list
 		y_position = cursor - 55
-		@employees.where(:status => "Interim").each do |employee|
-			if employee.duration_entree_last_week > 0
-			  text "#{employee.full_name}", :size => 12, :style => :bold, :spacing => 4
-			  move_down 5
-			  text "Lun #{6.days.ago.beginning_of_week.strftime("%d/%m/%Y")}         #{employee.display_duration_entree_last_monday}", :size => 10
-			  text "Mar #{(6.days.ago.beginning_of_week + 1.day).strftime("%d/%m/%Y")}         #{employee.display_duration_entree_last_tuesday}", :size => 10
-			  text "Mer #{(6.days.ago.beginning_of_week + 2.days).strftime("%d/%m/%Y")}         #{employee.display_duration_entree_last_wednesday}", :size => 10
-			  text "Jeu #{(6.days.ago.beginning_of_week + 3.days).strftime("%d/%m/%Y")}         #{employee.display_duration_entree_last_thursday}", :size => 10
-			  text "Ven #{(6.days.ago.beginning_of_week + 4.days).strftime("%d/%m/%Y")}         #{employee.display_duration_entree_last_friday}", :size => 10
-			  text "Sam #{(6.days.ago.beginning_of_week + 5.days).strftime("%d/%m/%Y")}        #{employee.display_duration_entree_last_saturday}", :size => 10
-			  text "Dim #{(6.days.ago.beginning_of_week + 6.days).strftime("%d/%m/%Y")}         #{employee.display_duration_entree_last_sunday}", :size => 10
-			  move_down 5
-			  text "Total Semaine:      #{employee.display_duration_entree_last_week}", :size => 12, :style => :bold, :spacing => 4
-			  move_down 10
-			end
-		end
+#   column_box ([0, y_position], :columns => 3, :width => bounds.width) do
+  		@employees.where(:status => "Interim").each do |employee|
+  			if employee.duration_entree_last_week > 0
+  			  text "#{employee.full_name}", :size => 10, :style => :bold, :spacing => 4
+  			  move_down 5
+          if employee.duration_entree_last_monday > 0
+  			  text "Lun #{6.days.ago.beginning_of_week.strftime("%d/%m/%Y")}         #{employee.display_duration_entree_last_monday}", :size => 8
+          end
+          if employee.duration_entree_last_tuesday > 0
+  			  text "Mar #{(6.days.ago.beginning_of_week + 1.day).strftime("%d/%m/%Y")}         #{employee.display_duration_entree_last_tuesday}", :size => 8
+  			  end
+          if employee.duration_entree_last_wednesday > 0
+          text "Mer #{(6.days.ago.beginning_of_week + 2.days).strftime("%d/%m/%Y")}         #{employee.display_duration_entree_last_wednesday}", :size => 8
+  			  end
+          if employee.duration_entree_last_thursday > 0
+          text "Jeu #{(6.days.ago.beginning_of_week + 3.days).strftime("%d/%m/%Y")}         #{employee.display_duration_entree_last_thursday}", :size => 8
+  			  end
+          if employee.duration_entree_last_friday > 0
+          text "Ven #{(6.days.ago.beginning_of_week + 4.days).strftime("%d/%m/%Y")}         #{employee.display_duration_entree_last_friday}", :size => 8
+  			  end
+          if employee.duration_entree_last_saturday > 0
+          text "Sam #{(6.days.ago.beginning_of_week + 5.days).strftime("%d/%m/%Y")}        #{employee.display_duration_entree_last_saturday}", :size => 8
+  			  end
+          if employee.duration_entree_last_sunday > 0
+          text "Dim #{(6.days.ago.beginning_of_week + 6.days).strftime("%d/%m/%Y")}         #{employee.display_duration_entree_last_sunday}", :size => 8
+  			  end
+          move_down 5
+  			  text "Total Semaine:        #{employee.display_duration_entree_last_week}", :size => 8, :style => :bold, :spacing => 4
+  			  move_down 10
+  			end
+  		end
+  #  end
 	end
 end
