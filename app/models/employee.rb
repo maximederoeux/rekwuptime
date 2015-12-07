@@ -244,22 +244,24 @@ class Employee < ActiveRecord::Base
 	end
 
 	def display_duration_entree_nice(attendance) # OK
-		if duration_entree_in_hours(attendance) < 10 && display_duration_entree_minutes(attendance) < 10 && display_duration_entree_seconds(attendance) < 10
-			"0#{duration_entree_in_hours(attendance)}h0#{display_duration_entree_minutes(attendance)}m0#{display_duration_entree_seconds(attendance)}"
-		elsif duration_entree_in_hours(attendance) < 10 && display_duration_entree_minutes(attendance) < 10 && display_duration_entree_seconds(attendance) > 9
-			"0#{duration_entree_in_hours(attendance)}h0#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}"
-		elsif duration_entree_in_hours(attendance) < 10 && display_duration_entree_minutes(attendance) > 9 && display_duration_entree_seconds(attendance) < 10
-			"0#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m0#{display_duration_entree_seconds(attendance)}"
-		elsif duration_entree_in_hours(attendance) < 10 && display_duration_entree_minutes(attendance) > 9 && display_duration_entree_seconds(attendance) >	9
-			"0#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}"	
-		elsif duration_entree_in_hours(attendance) > 9 && display_duration_entree_minutes(attendance) < 10 && display_duration_entree_seconds(attendance) < 10
-			"#{duration_entree_in_hours(attendance)}h0#{display_duration_entree_minutes(attendance)}m0#{display_duration_entree_seconds(attendance)}"
-		elsif duration_entree_in_hours(attendance) > 9 && display_duration_entree_minutes(attendance) < 10 && display_duration_entree_seconds(attendance) > 9
-			"#{duration_entree_in_hours(attendance)}h0#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}"	
-		elsif duration_entree_in_hours(attendance) > 9 && display_duration_entree_minutes(attendance) > 9 && display_duration_entree_seconds(attendance) < 10
-			"#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m0#{display_duration_entree_seconds(attendance)}"
-		elsif duration_entree_in_hours(attendance) > 9 && display_duration_entree_minutes(attendance) > 9 && display_duration_entree_seconds(attendance) > 9
-			"#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}"	
+		if next_sortie(attendance)
+			if duration_entree_in_hours(attendance) < 10 && display_duration_entree_minutes(attendance) < 10 && display_duration_entree_seconds(attendance) < 10
+				"0#{duration_entree_in_hours(attendance)}h0#{display_duration_entree_minutes(attendance)}m0#{display_duration_entree_seconds(attendance)}"
+			elsif duration_entree_in_hours(attendance) < 10 && display_duration_entree_minutes(attendance) < 10 && display_duration_entree_seconds(attendance) > 9
+				"0#{duration_entree_in_hours(attendance)}h0#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}"
+			elsif duration_entree_in_hours(attendance) < 10 && display_duration_entree_minutes(attendance) > 9 && display_duration_entree_seconds(attendance) < 10
+				"0#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m0#{display_duration_entree_seconds(attendance)}"
+			elsif duration_entree_in_hours(attendance) < 10 && display_duration_entree_minutes(attendance) > 9 && display_duration_entree_seconds(attendance) >	9
+				"0#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}"	
+			elsif duration_entree_in_hours(attendance) > 9 && display_duration_entree_minutes(attendance) < 10 && display_duration_entree_seconds(attendance) < 10
+				"#{duration_entree_in_hours(attendance)}h0#{display_duration_entree_minutes(attendance)}m0#{display_duration_entree_seconds(attendance)}"
+			elsif duration_entree_in_hours(attendance) > 9 && display_duration_entree_minutes(attendance) < 10 && display_duration_entree_seconds(attendance) > 9
+				"#{duration_entree_in_hours(attendance)}h0#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}"	
+			elsif duration_entree_in_hours(attendance) > 9 && display_duration_entree_minutes(attendance) > 9 && display_duration_entree_seconds(attendance) < 10
+				"#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m0#{display_duration_entree_seconds(attendance)}"
+			elsif duration_entree_in_hours(attendance) > 9 && display_duration_entree_minutes(attendance) > 9 && display_duration_entree_seconds(attendance) > 9
+				"#{duration_entree_in_hours(attendance)}h#{display_duration_entree_minutes(attendance)}m#{display_duration_entree_seconds(attendance)}"	
+			end
 		end
 	end
 
@@ -1234,30 +1236,40 @@ class Employee < ActiveRecord::Base
 	end
 
 	def monthly_schedule_in_minutes
+		if schedule
 		(monthly_schedule / 60).floor
+		end
 	end
 
 	def monthly_schedule_in_hours
+		if schedule
 		(monthly_schedule_in_minutes / 60).floor
+		end
 	end
 
-	def display_monthly_schedule_minutes		
-		monthly_schedule_in_minutes - monthly_schedule_in_hours*60		
+	def display_monthly_schedule_minutes
+		if schedule		
+		monthly_schedule_in_minutes - monthly_schedule_in_hours*60
+		end	
 	end
 
 	def display_monthly_schedule_seconds
+		if schedule
 		monthly_schedule - monthly_schedule_in_minutes*60
+		end
 	end
 
 	def display_monthly_schedule # OK
-		if monthly_schedule_in_hours < 10 && display_monthly_schedule_minutes < 10
-			"0#{monthly_schedule_in_hours}h0#{display_monthly_schedule_minutes}m"
-		elsif monthly_schedule_in_hours < 10 && display_monthly_schedule_minutes > 9
-			"0#{monthly_schedule_in_hours}h#{display_monthly_schedule_minutes}m"
-		elsif monthly_schedule_in_hours > 9 && display_monthly_schedule_minutes < 10
-			"#{monthly_schedule_in_hours}h0#{display_monthly_schedule_minutes}m"
-		elsif monthly_schedule_in_hours > 9 && display_monthly_schedule_minutes > 9
-			"#{monthly_schedule_in_hours}h#{display_monthly_schedule_minutes}m"	
+		if schedule
+			if monthly_schedule_in_hours < 10 && display_monthly_schedule_minutes < 10
+				"0#{monthly_schedule_in_hours}h0#{display_monthly_schedule_minutes}m"
+			elsif monthly_schedule_in_hours < 10 && display_monthly_schedule_minutes > 9
+				"0#{monthly_schedule_in_hours}h#{display_monthly_schedule_minutes}m"
+			elsif monthly_schedule_in_hours > 9 && display_monthly_schedule_minutes < 10
+				"#{monthly_schedule_in_hours}h0#{display_monthly_schedule_minutes}m"
+			elsif monthly_schedule_in_hours > 9 && display_monthly_schedule_minutes > 9
+				"#{monthly_schedule_in_hours}h#{display_monthly_schedule_minutes}m"	
+			end
 		end
 	end
 
@@ -1268,30 +1280,40 @@ class Employee < ActiveRecord::Base
 	end
 
 	def todo_vs_done_in_minutes
+		if schedule
 		(todo_vs_done / 60).floor
+		end
 	end
 
 	def todo_vs_done_in_hours
+		if schedule
 		(todo_vs_done_in_minutes / 60).floor
+		end
 	end
 
-	def display_todo_vs_done_minutes		
-		todo_vs_done_in_minutes - todo_vs_done_in_hours*60		
+	def display_todo_vs_done_minutes
+		if schedule	
+		todo_vs_done_in_minutes - todo_vs_done_in_hours*60
+		end	
 	end
 
 	def display_todo_vs_done_seconds
+		if schedule
 		todo_vs_done - todo_vs_done_in_minutes*60
+		end
 	end
 
 	def display_todo_vs_done # OK
-		if todo_vs_done_in_hours < 10 && display_todo_vs_done_minutes < 10
-			"0#{todo_vs_done_in_hours}h0#{display_todo_vs_done_minutes}m"
-		elsif todo_vs_done_in_hours < 10 && display_todo_vs_done_minutes > 9
-			"0#{todo_vs_done_in_hours}h#{display_todo_vs_done_minutes}m"
-		elsif todo_vs_done_in_hours > 9 && display_todo_vs_done_minutes < 10
-			"#{todo_vs_done_in_hours}h0#{display_todo_vs_done_minutes}m"
-		elsif todo_vs_done_in_hours > 9 && display_todo_vs_done_minutes > 9
-			"#{todo_vs_done_in_hours}h#{display_todo_vs_done_minutes}m"	
+		if schedule
+			if todo_vs_done_in_hours < 10 && display_todo_vs_done_minutes < 10
+				"0#{todo_vs_done_in_hours}h0#{display_todo_vs_done_minutes}m"
+			elsif todo_vs_done_in_hours < 10 && display_todo_vs_done_minutes > 9
+				"0#{todo_vs_done_in_hours}h#{display_todo_vs_done_minutes}m"
+			elsif todo_vs_done_in_hours > 9 && display_todo_vs_done_minutes < 10
+				"#{todo_vs_done_in_hours}h0#{display_todo_vs_done_minutes}m"
+			elsif todo_vs_done_in_hours > 9 && display_todo_vs_done_minutes > 9
+				"#{todo_vs_done_in_hours}h#{display_todo_vs_done_minutes}m"	
+			end
 		end
 	end
 

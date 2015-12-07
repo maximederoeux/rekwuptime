@@ -15,6 +15,7 @@
             <th class="text-center">Situation actuelle</th>
             <th class="text-center">Total Mois en cours</th>
             <th class="text-center">Total à prester</th>
+            <th class="text-center">Différence</th>
             <th colspan="5"></th>
           </tr>
         </thead>
@@ -40,7 +41,9 @@
               </td>
 
               <td class="text-center"><%= employee.display_duration_entree_current_month %></td>
-              <td class="text-center"><%= employee.monthly_schedule %></td>
+              <td class="text-center"><%= employee.display_monthly_schedule %></td>
+              <td class="text-center"><%= employee.display_todo_vs_done %></td>
+
 
                           
               <!-- <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
