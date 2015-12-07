@@ -16,7 +16,7 @@
         <%= f.collection_select :employee_id, Employee.all, :id, :full_name, {prompt: true} %><br><br>
 
         <strong>Date: </strong><%= @attendance.created_at.strftime("%A %d/%m/%Y") %><br>
-        <strong>Heure: </strong><%= (@attendance.created_at + 3600).strftime("%H:%M") %><br>
+        <strong>Heure: </strong><%= @attendance.created_at.strftime("%H:%M") %><br>
         <br>
 
         <strong>Modifier le moment:  </strong><%= f.input :created_at %>

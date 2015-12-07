@@ -145,7 +145,7 @@ PRESENCES DES 30 DERNIERS JOURS
             </div>
 
             <div class="col-md-3">     
-              <%= (entree.created_at + 3600).strftime("%H:%M") %>
+              <%= entree.created_at.strftime("%H:%M") %>
 
               <%= link_to edit_attendance_path(entree) do %>
               <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
@@ -154,7 +154,7 @@ PRESENCES DES 30 DERNIERS JOURS
             </div>
 
             <div class="col-md-3">
-                <%= (@employee.next_sortie(entree).created_at + 3600).strftime("%H:%M") if @employee.next_sortie(entree) %>
+                <%= @employee.next_sortie(entree).created_at.strftime("%H:%M") if @employee.next_sortie(entree) %>
 
                   <% if @employee.next_sortie(entree) %>
 
