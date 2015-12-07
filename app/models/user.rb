@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
 
 def interim
-	employees.where(:status == 'Interim')
+	employees.where(:status == 'Intérim')
 	
 end
 

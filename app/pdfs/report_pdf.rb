@@ -67,7 +67,7 @@ class ReportPdf < Prawn::Document
 	def list
 		y_position = cursor - 55
 #   column_box ([0, y_position], :columns => 3, :width => bounds.width) do
-  		@employees.where(:status => "Interim").each do |employee|
+  		@employees.where(:status => "Intérim").each do |employee|
   			if employee.duration_entree_last_week > 0
   			  text "#{employee.full_name}", :size => 10, :style => :bold, :spacing => 4
   			  move_down 5

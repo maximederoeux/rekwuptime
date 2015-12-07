@@ -13,7 +13,7 @@
         Du lundi <%= 6.days.ago.beginning_of_week.strftime("%d/%m/%Y") %> au dimanche <%= (6.days.ago.beginning_of_week + 6.days).strftime("%d/%m/%Y") %>
       </h5>
 
-        <% @employees.where(:status => "Interim").each do |employee| %>
+        <% @employees.where(:status => "Intérim").each do |employee| %>
 
           <% if employee.duration_entree_last_week > 0 %>
 
@@ -69,7 +69,7 @@
         Du lundi <%= 6.days.ago.beginning_of_week.strftime("%d/%m/%Y") %> au dimanche <%= (6.days.ago.beginning_of_week + 6.days).strftime("%d/%m/%Y") %>
       </h5>
 
-        <% @employees.where(:status => "Employe").each do |employee| %>
+        <% @employees.where(:status => "Employé").each do |employee| %>
 
           <% if employee.duration_entree_last_week > 0 %>
 

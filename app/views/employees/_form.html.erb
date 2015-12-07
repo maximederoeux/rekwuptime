@@ -4,8 +4,8 @@
   <div class="form-inputs">
     <%= f.input :name, :label => "Nom" %>
     <%= f.input :first_name, :label => "Prénom" %>
-    <%= f.input :status, :label => "Statut" %>
-    <%= f.input :validation_code, :label => "Code de Validation" %>
+    <strong><%= "Statut " %></strong>
+    <%= f.select :status, options_for_select(["Intérim","Employé"],:disabled => ["Select One"]), :class => 'genForm_dropBox' %>
     <%= f.input :schedule, :label => "Nombre d'heures à prester par mois" %>
   </div>
 
