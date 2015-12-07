@@ -212,7 +212,7 @@ PRESENCES DES 30 DERNIERS JOURS
 
   <h1 class="text-center">
   <%= Time.now.strftime("%A %d/%m/%Y") %><br>
-  <%= Time.now.strftime("%H:%M") %>
+  <%= (Time.now + 3600).strftime("%H:%M") %>
   </h1>
 
   <h3 class="text-center">
