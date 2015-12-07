@@ -21,7 +21,7 @@
         <td><%= attendance.employee.full_name %></td>
         <td><%= attendance.content %></td>
         <td><%= attendance.created_at.strftime("%A %d/%m/%Y") %></td>
-        <td><%= attendance.created_at.strftime("%H:%M") %>
+        <td><%= (attendance.created_at + 3600).strftime("%H:%M") %>
             <%= link_to edit_attendance_path(attendance) do %>
                       <span class="glyphicon glyphicon-pencil btn btn-default btn-xs" aria-hidden="true"></span>
             <% end %>
